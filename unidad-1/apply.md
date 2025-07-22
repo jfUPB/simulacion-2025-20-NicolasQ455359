@@ -31,6 +31,48 @@ function draw() {
 
 [Ver mi sketch en p5.js - Actividad 3](https://editor.p5js.org/NicolasQ455359/sketches/2IGevG_j_)
 
+## Actividad 4 - Distribución No Uniforme
+
+### Código:
+```javascript
+function setup() { 
+  createCanvas(100, 100);
+  background(200);
+}
+
+function draw() {
+  noStroke();
+  fill(0, 10);
+
+  // Distribución no uniforme: favorece la derecha
+  let r = random(1);
+  let x;
+  if (r < 0.8) {
+    x = random(50, 100);
+  } else {
+    x = random(0, 50);
+  }
+  let y = 25;
+  circle(x, y, 5);
+
+  // Distribución Gaussiana desplazada hacia la derecha
+  x = randomGaussian(70, 5);
+  y = 50;
+  circle(x, y, 5);
+
+  // Otra Gaussiana aún más hacia la derecha
+  x = randomGaussian(80, 10);
+  y = 75;
+  circle(x, y, 5);
+}
+```
+<img width="1879" height="925" alt="image" src="https://github.com/user-attachments/assets/3a9ae627-0ff5-4444-90d8-35dea358c4b0" />
+### Explicación: El código favorece valores hacia la derecha mediante una distribución no uniforme y Gaussianas desplazadas. Los puntos tienden a acumularse en la zona derecha del canvas.
+
+[Ver mi sketch en p5.js - Actividad 3](https://editor.p5js.org/NicolasQ455359/sketches/0hkbpPBPA)
+
+
+
 
 
 
