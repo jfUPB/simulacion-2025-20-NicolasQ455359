@@ -71,6 +71,29 @@ function draw() {
 
 [Ver mi sketch en p5.js - Actividad 4](https://editor.p5js.org/NicolasQ455359/sketches/0hkbpPBPA)
 
+## Actividad 5 - Distribución Normal
+
+### Código:
+```javascript
+function setup() {
+  createCanvas(600, 200);
+  background(240);
+  noStroke();
+  fill(100, 150, 200, 150);
+}
+
+function draw() {
+  let x = randomGaussian(width / 2, 60);
+  let distanceToCenter = abs(width / 2 - x);
+  let diameter = map(distanceToCenter, 0, width / 2, 20, 2);
+  let y = random(height);
+  ellipse(x, y, diameter);
+}
+```
+<img width="1879" height="926" alt="image" src="https://github.com/user-attachments/assets/b9426891-f00e-4cf3-b133-268350966750" />
+### Explicación: El código genera puntos con distribución normal centrada en el medio del canvas. Los círculos son más grandes cerca del centro para reforzar visualmente la acumulación. La visualización muestra cómo los valores se concentran alrededor de la media.
+
+[Ver mi sketch en p5.js - Actividad 5](https://editor.p5js.org/NicolasQ455359/sketches/38CVLT4Az)
 
 
 
