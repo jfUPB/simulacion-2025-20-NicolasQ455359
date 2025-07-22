@@ -57,7 +57,7 @@ function draw() {
 
 ### Explicación: El punto se mueve en pasos aleatorios pequeños en cualquier dirección. Cambié el rango de movimiento para que a veces se desplace más rápido.
 
-[Ver mi sketch en p5.js - Actividad 3](https://editor.p5js.org/NicolasQ455359/sketches/2IGevG_j_)
+[Ver mi sketch en p5.js - Actividad 3](https://editor.p5js.org/NicolasQ455359/sketches/K39ZO2xAv)
 
 ## Actividad 4 - Distribución no uniforme
 ### Antes:
