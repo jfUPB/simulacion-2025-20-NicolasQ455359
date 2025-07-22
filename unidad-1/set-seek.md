@@ -53,7 +53,7 @@ function draw() {
   y = constrain(y, 0, height);
 }
 ```
-<img width="1880" height="920" alt="image" src="https://github.com/user-attachments/assets/83a866f1-a2ad-4bcc-a619-bc68cbecae13" />
+<img width="1872" height="879" alt="image" src="https://github.com/user-attachments/assets/dcfe85e8-7112-4311-aae2-61f7703cad91" />
 
 ### Explicación: El punto se mueve en pasos aleatorios pequeños en cualquier dirección. Cambié el rango de movimiento para que a veces se desplace más rápido.
 
