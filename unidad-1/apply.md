@@ -5,6 +5,19 @@
 ## Actividad 8 - Creación de obra generativa interactiva en tiempo real
 
 ### Concepto de obra generativa
-Una obra generativa es aquella que no tiene un resultado fijo o predeterminado. En lugar de que el artista controle cada detalle visual, diseña un sistema de reglas, comportamientos y parámetros que, a través de la interacción y del uso de algoritmos como ruido Perlin, distribuciones aleatorias o caminatas aleatorias, produce resultados únicos en tiempo real.
-Esto significa que la obra evoluciona con cada ejecución y, en este caso, también responde a la interacción del espectador. Cada vez que se experimenta, el resultado es distinto.
+
+La obra simula un campo de puntos que se comportan como partículas flotando en el viento.
+Combino tres conceptos de la unidad:
+
+Ruido Perlin para darle naturalidad al movimiento.
+
+Aleatoriedad en la dirección inicial de cada partícula.
+
+Lévy Flight para crear momentos inesperados de movimiento largo, como si fueran ráfagas de viento.
+
+Interactividad:
+
+El mouse altera el flujo: mientras más rápido se mueva, las partículas cambiarán su dirección.
+
+Al hacer clic, las partículas reciben un "empujón" aleatorio que genera un cambio brusco y orgánico en su trayectoria.
 
