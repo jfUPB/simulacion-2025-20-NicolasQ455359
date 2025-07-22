@@ -29,7 +29,7 @@ function draw() {
 <img width="1880" height="920" alt="image" src="https://github.com/user-attachments/assets/83a866f1-a2ad-4bcc-a619-bc68cbecae13" />
 ### Explicación: El punto se mueve en pasos aleatorios pequeños en cualquier dirección. Cambié el rango de movimiento para que a veces se desplace más rápido.
 
-[Ver mi sketch en p5.js - Actividad 05](https://editor.p5js.org/NicolasQ455359/sketches/0hkbpPBPA)
+[Ver mi sketch en p5.js - Actividad 3](https://editor.p5js.org/NicolasQ455359/sketches/2IGevG_j_)
 
 
 
