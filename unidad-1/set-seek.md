@@ -5,7 +5,7 @@
 ## ¿Qué aprendí sobre la aleatoriedad?
 La aleatoriedad es fundamental para crear comportamientos impredecibles y naturales tanto en arte generativo como en experiencias interactivas. Permite romper la repetición y generar variabilidad, aportando naturalidad y vida a sistemas visuales o interactivos.
 
-## Ejemplo claro de esto:
+## Ejemplo Sodía Lezcano:
 En la obra de Sofía Lezcano, la aleatoriedad permite que su visualización nunca sea la misma. El uso de ruido Perlin y otras técnicas hace que cada iteración sea única.
 
 ## Diferencia entre distribuciones:
