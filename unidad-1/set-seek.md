@@ -18,7 +18,7 @@ El ruido Perlin produce cambios suaves y progresivos, ideal para simular natural
 Como estudiante de Ingeniería en Diseño de Entretenimiento Digital, mi interés está enfocado en la creación de experiencias interactivas, especialmente en entornos como Unreal Engine, donde la aleatoriedad es clave para diseñar mundos más inmersivos y creíbles.
 
 Por ejemplo:
-En la generación procedural de niveles o entornos, se utiliza aleatoriedad para crear terrenos, bosques, ciudades o mazmorras que nunca sean iguales en dos partidas distintas. Esto mantiene el interés del jugador y amplía la rejugabilidad.
+En la generación de niveles o entornos, se utiliza aleatoriedad para crear terrenos, bosques o ciudades que nunca sean iguales en dos partidas distintas. Esto mantiene el interés del jugador y amplía la rejugabilidad.
 En la simulación de comportamientos de NPCs (personajes no jugables), se pueden incluir patrones aleatorios para que reaccionen de manera diferente a situaciones similares, haciendo que la experiencia sea menos predecible y más natural.
 En sistemas de partículas, física o materiales interactivos, la aleatoriedad permite simular fenómenos realistas como el fuego, el humo, el agua o incluso la dispersión de luz en ciertos materiales, mejorando el impacto visual de la experiencia.
 
