@@ -138,6 +138,84 @@ function draw() {
 [Ver mi sketch en p5.js - Actividad 5](https://editor.p5js.org/NicolasQ455359/sketches/38CVLT4Az)
 
 
+## Actividad 06 - Distribución Personalizada: Lévy Flight
+
+### ¿Por qué usé esta técnica y qué resultados esperaba obtener?
+
+El Lévy Flight genera un movimiento donde predominan los pasos pequeños, pero de forma inesperada ocurren saltos largos. Esto hace que la caminata sea más natural y orgánica, imitando comportamientos que vemos en la naturaleza, como los patrones de búsqueda de los animales.
+
+Esperaba obtener un resultado donde el punto se desplazara lentamente, pero de vez en cuando hiciera saltos grandes, creando un recorrido mucho más visualmente dinámico e impredecible que una caminata aleatoria tradicional.
+
+### 💻 Código:
+```javascript
+let position;
+
+function setup() {
+  createCanvas(600, 400);
+  background(240);
+  position = createVector(width / 2, height / 2);
+  stroke(0, 50);
+  strokeWeight(2);
+}
+
+function draw() {
+  point(position.x, position.y);
+  let step = p5.Vector.random2D();
+  let r = pow(random(1), 4) * 100;
+  step.mult(r);
+  position.add(step);
+  position.x = constrain(position.x, 0, width);
+  position.y = constrain(position.y, 0, height);
+}
+```
+<img width="1867" height="855" alt="image" src="https://github.com/user-attachments/assets/1730ede3-a770-4e4a-acb6-8a1a3c7ba457" />
+
+[Ver mi sketch en p5.js - Actividad 6](https://editor.p5js.org/NicolasQ455359/sketches/Bayi-B5b5)
+
+## Actividad 07 - Ruido Perlin
+
+### Concepto, expectativas y resultados esperados:
+
+El ruido Perlin genera valores aleatorios suaves, donde cada nuevo valor es cercano al anterior, lo que crea una sensación de continuidad natural. Es muy útil para simular fenómenos orgánicos, como terrenos, nubes, olas o movimiento fluido.
+
+Al analizar la figura 0.4 del material, entendí que el ruido Perlin produce cambios suaves, a diferencia del ruido aleatorio tradicional que genera saltos bruscos.
+Esperaba obtener una visualización con una línea continua y ondulante que muestre claramente esa progresión orgánica de valores.
+
+Código
+```javascript
+let xoff = 0;
+let yoff = 0;
+let y;
+
+function setup() {
+  createCanvas(600, 200);
+  background(240);
+  stroke(50, 100, 200);
+  noFill();
+}
+
+function draw() {
+  background(240);
+  beginShape();
+  xoff = 0;
+  for (let x = 0; x < width; x++) {
+    let noiseVal = noise(xoff, yoff);
+    y = noiseVal * height;
+    vertex(x, y);
+    xoff += 0.02;
+  }
+  endShape();
+  yoff += 0.01;
+}
+```
+<img width="1868" height="882" alt="image" src="https://github.com/user-attachments/assets/bdff5aa3-796c-4b5e-ab53-80f3cc6ae78d" />
+
+[Ver mi sketch en p5.js - Actividad 7](https://editor.p5js.org/NicolasQ455359/sketches/4ISjLNsx8)
+
+
+
+
+
 
 
 
