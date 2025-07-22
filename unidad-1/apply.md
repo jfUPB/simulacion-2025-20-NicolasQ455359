@@ -15,7 +15,7 @@ Aleatoriedad en la dirección inicial de cada partícula.
 
 Lévy Flight para crear momentos inesperados de movimiento largo, como si fueran ráfagas de viento.
 
-Interactividad:
+### Interactividad:
 
 El mouse altera el flujo: mientras más rápido se mueva, las partículas cambiarán su dirección.
 
