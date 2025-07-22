@@ -4,20 +4,19 @@
 
 ## Actividad 8 - Creación de obra generativa interactiva en tiempo real
 
-### Concepto de obra generativa
+### Concepto de obra generativa: Campos de viento
 
-La obra simula un campo de puntos que se comportan como partículas flotando en el viento.
-Combino tres conceptos de la unidad:
+Ruido Perlin para dar dirección fluida a las partículas.
 
-Ruido Perlin para darle naturalidad al movimiento.
+Aleatoriedad inicial para su posición y velocidad.
 
-Aleatoriedad en la dirección inicial de cada partícula.
-
-Lévy Flight para crear momentos inesperados de movimiento largo, como si fueran ráfagas de viento.
+Lévy Flight para movimientos inesperados al hacer clic.
 
 ### Interactividad:
 
-El mouse altera el flujo: mientras más rápido se mueva, las partículas cambiarán su dirección.
+Click empuja las partículas de forma repentina.
 
-Al hacer clic, las partículas reciben un "empujón" aleatorio que genera un cambio brusco y orgánico en su trayectoria.
+Teclado añade nuevas partículas aleatorias al sistema en cualquier momento.
+
+
 
