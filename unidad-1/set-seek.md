@@ -118,25 +118,31 @@ Las Gaussianas generan acumulaciones naturales, perfectas para representar fenó
 ### Código:
 ```javascript
 function setup() {
-  createCanvas(600, 200);
+  createCanvas(600, 600);
   background(240);
   noStroke();
-  fill(100, 150, 200, 150);
+  fill(0, 20);  
 }
 
 function draw() {
-  let x = randomGaussian(width / 2, 60);
-  let distanceToCenter = abs(width / 2 - x);
-  let diameter = map(distanceToCenter, 0, width / 2, 20, 2);
-  let y = random(height);
+  // Distribución normal en Y (centrada en la mitad de la altura)
+  let y = randomGaussian(height / 2, 60);
+
+  // El tamaño del círculo depende de su distancia vertical al centro
+  let distanceToCenter = abs(height / 2 - y);
+  let diameter = map(distanceToCenter, 0, height / 2, 20, 2);
+
+  // Posición X aleatoria para dispersión horizontal
+  let x = random(width);
+
   ellipse(x, y, diameter);
 }
 ```
-<img width="1879" height="926" alt="image" src="https://github.com/user-attachments/assets/b9426891-f00e-4cf3-b133-268350966750" />
+<img width="1869" height="891" alt="image" src="https://github.com/user-attachments/assets/9a1afb6f-ecf3-4bfc-8514-3168b28047be" />
 
-### Explicación: El código genera puntos con distribución normal centrada en el medio del canvas. Los círculos son más grandes cerca del centro para reforzar visualmente la acumulación. La visualización muestra cómo los valores se concentran alrededor de la media.
+### Explicación: Los círculos más grandes están más cerca del centro porque la probabilidad es mayor ahí, y los más pequeños se alejan hacia los extremos. Así visualizo la acumulación típica de la distribución normal de una forma estética y sencilla.
 
-[Ver mi sketch en p5.js - Actividad 5](https://editor.p5js.org/NicolasQ455359/sketches/38CVLT4Az)
+[Ver mi sketch en p5.js - Actividad 5](https://editor.p5js.org/NicolasQ455359/sketches/w2v-HkvGz)
 
 
 ## Actividad 06 - Distribución Personalizada: Lévy Flight
