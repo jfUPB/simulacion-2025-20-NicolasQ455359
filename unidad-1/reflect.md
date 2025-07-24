@@ -2,6 +2,8 @@
 
 ## 🤔 Fase: Reflect
 
+## Actividad 9: Autoevaluación
+
 ## Parte 1: recuperación de conocimiento (Retrieval Practice)
 ### 1. Diferencia entre random() y noise()
 
@@ -38,6 +40,21 @@ Una caminata (o “walk”) es un tipo de movimiento donde un objeto se va despl
 ### 1. ¿Cuál fue el concepto más abstracto o difícil de visualizar?
 
 Creo que fue la idea de distribuciones de probabilidad. Al principio no entendía cómo algo tan matemático afectaba lo visual. Me confundía la diferencia entre uniforme, normal y personalizada. Lo entendí mejor cuando hice los ejercicios y vi cómo cambiaban los patrones según los valores. Hacerlo me ayudó más que leerlo.
+
+### 2. ¿Qué error me llevó a una idea creativa?
+
+Cuando estaba haciendo la obra final, al principio el código me quedó mal y las partículas se salían de la pantalla y desaparecían. En vez de verlo como un error, decidí que las partículas “renacieran” del otro lado, como si fueran parte de un campo infinito. Eso le dio una sensación de continuidad que me gustó más que mi idea original.
+
+### 3. Mayor desafío al combinar técnicas de aleatoriedad
+
+El mayor reto fue controlar los parámetros para que las técnicas no se estorbaran entre sí. Por ejemplo, si combinaba ruido Perlin y Lévy Flight, a veces el salto era tan brusco que se perdía el movimiento suave. Me tocó ajustar escalas y frecuencias hasta que se sintiera equilibrado. Fue ensayo y error.
+
+### 4. Si tuviera que hacer la Actividad 08 de nuevo…
+
+Creo que planearía mejor cómo interactuaría el usuario. Al principio solo pensé en hacer clic, pero después agregué interacción con el teclado. Si volviera a empezar, pensaría desde el inicio cómo involucrar más al usuario para que la obra se sintiera aún más viva.
+
+## Actividad 10: Coevaluación
+
 
 
 
