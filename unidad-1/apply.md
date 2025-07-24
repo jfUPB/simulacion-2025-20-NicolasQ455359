@@ -2,6 +2,7 @@
 
 ## 🛠 Fase: Apply
 
+
 ## Actividad 8 - Creación de obra generativa interactiva en tiempo real
 
 ### Concepto de obra generativa: Campos de viento
