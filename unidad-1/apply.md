@@ -2,103 +2,112 @@
 
 ## 🛠 Fase: Apply
 
-## Actividad 3 - Caminata Aleatoria
 
-### Código:
-```javascript
-let x, y;
+## Actividad 8 - Creación de obra generativa interactiva en tiempo real
+
+### Concepto de obra generativa: Campos de viento
+
+Se me ocurrió la idea de generar movimientos suaves y caoticos que hacen parecer corrientes de viento, será representado por medio de partículas que flotan y son arrastradas por corrientes de aire invisibles. Busco representar como pequeñas cosas intractuan con elementos naturales, en este caso el viento y que sean aleatorias para crear patrones.
+
+Los 3 conceptos que usaré son:
+
+Ruido Perlin para dar dirección fluida a las partículas.
+
+Aleatoriedad inicial para su posición y velocidad.
+
+Lévy Flight para movimientos inesperados al hacer clic.
+
+### Interactividad:
+
+Click empuja las partículas de forma repentina.
+
+Teclado añade nuevas partículas aleatorias al sistema en cualquier momento.
+
+Codigo: 
+
+```Javascript
+let particles = [];
 
 function setup() {
-  createCanvas(600, 600);
-  background(220);
-  x = width / 2;
-  y = height / 2;
-  stroke(0, 100, 200);
-}
-
-function draw() {
-  point(x, y);
-  let stepX = int(random(-10, 10));
-  let stepY = int(random(-10, 10));
-  x += stepX;
-  y += stepY;
-  x = constrain(x, 0, width);
-  y = constrain(y, 0, height);
-}
-```
-<img width="1880" height="920" alt="image" src="https://github.com/user-attachments/assets/83a866f1-a2ad-4bcc-a619-bc68cbecae13" />
-
-### Explicación: El punto se mueve en pasos aleatorios pequeños en cualquier dirección. Cambié el rango de movimiento para que a veces se desplace más rápido.
-
-[Ver mi sketch en p5.js - Actividad 3](https://editor.p5js.org/NicolasQ455359/sketches/2IGevG_j_)
-
-## Actividad 4 - Distribución No Uniforme
-
-### Código:
-```javascript
-function setup() { 
-  createCanvas(100, 100);
-  background(200);
-}
-
-function draw() {
-  noStroke();
-  fill(0, 10);
-
-  // Distribución no uniforme: favorece la derecha
-  let r = random(1);
-  let x;
-  if (r < 0.8) {
-    x = random(50, 100);
-  } else {
-    x = random(0, 50);
+  createCanvas(800, 600);
+  for (let i = 0; i < 300; i++) {
+    particles.push(new Particle(random(width), random(height)));
   }
-  let y = 25;
-  circle(x, y, 5);
-
-  // Distribución Gaussiana desplazada hacia la derecha
-  x = randomGaussian(70, 5);
-  y = 50;
-  circle(x, y, 5);
-
-  // Otra Gaussiana aún más hacia la derecha
-  x = randomGaussian(80, 10);
-  y = 75;
-  circle(x, y, 5);
-}
-```
-<img width="1879" height="925" alt="image" src="https://github.com/user-attachments/assets/3a9ae627-0ff5-4444-90d8-35dea358c4b0" />
-
-### Explicación: El código favorece valores hacia la derecha mediante una distribución no uniforme y Gaussianas desplazadas. Los puntos tienden a acumularse en la zona derecha del canvas.
-
-[Ver mi sketch en p5.js - Actividad 4](https://editor.p5js.org/NicolasQ455359/sketches/0hkbpPBPA)
-
-## Actividad 5 - Distribución Normal
-
-### Código:
-```javascript
-function setup() {
-  createCanvas(600, 200);
-  background(240);
-  noStroke();
-  fill(100, 150, 200, 150);
+  background(255);
 }
 
 function draw() {
-  let x = randomGaussian(width / 2, 60);
-  let distanceToCenter = abs(width / 2 - x);
-  let diameter = map(distanceToCenter, 0, width / 2, 20, 2);
-  let y = random(height);
-  ellipse(x, y, diameter);
+  background(255, 20);
+  for (let p of particles) {
+    p.update();
+    p.show();
+  }
+}
+
+function mousePressed() {
+  for (let p of particles) {
+    let force = p5.Vector.random2D();
+    force.mult(random(20, 50));
+    p.applyForce(force);
+  }
+}
+
+function keyPressed() {
+  for (let i = 0; i < 10; i++) {
+    particles.push(new Particle(random(width), random(height)));
+  }
+}
+
+class Particle {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D();
+    this.acc = createVector(0, 0);
+    this.t = random(1000);
+  }
+
+  applyForce(force) {
+    this.acc.add(force);
+  }
+
+  update() {
+    let angle = noise(this.pos.x * 0.002, this.pos.y * 0.002, this.t) * TWO_PI * 4;
+    let force = p5.Vector.fromAngle(angle);
+    force.mult(0.5);
+    this.applyForce(force);
+
+    // Lévy Flight ocasional
+    if (random(1) < 0.002) {
+      let jump = p5.Vector.random2D();
+      jump.mult(pow(random(1), 4) * 100);
+      this.applyForce(jump);
+    }
+
+    this.vel.add(this.acc);
+    this.vel.limit(3);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+    this.t += 0.01;
+
+    this.edges();
+  }
+
+  show() {
+    noStroke();
+    fill(0, 50);
+    ellipse(this.pos.x, this.pos.y, 3);
+  }
+
+  edges() {
+    if (this.pos.x > width) this.pos.x = 0;
+    if (this.pos.x < 0) this.pos.x = width;
+    if (this.pos.y > height) this.pos.y = 0;
+    if (this.pos.y < 0) this.pos.y = height;
+  }
 }
 ```
-<img width="1879" height="926" alt="image" src="https://github.com/user-attachments/assets/b9426891-f00e-4cf3-b133-268350966750" />
-
-### Explicación: El código genera puntos con distribución normal centrada en el medio del canvas. Los círculos son más grandes cerca del centro para reforzar visualmente la acumulación. La visualización muestra cómo los valores se concentran alrededor de la media.
-
-[Ver mi sketch en p5.js - Actividad 5](https://editor.p5js.org/NicolasQ455359/sketches/38CVLT4Az)
-
-
+[Ver mi sketch en p5.js - Actividad 8](https://editor.p5js.org/NicolasQ455359/sketches/PMaaKLjFS)
+<img width="1868" height="883" alt="image" src="https://github.com/user-attachments/assets/70630d3f-6c31-4a66-bbcc-45f1b40a66c7" />
 
 
 
