@@ -177,6 +177,55 @@ Limitan la velocidad máxima de un objeto o controlar la dirección del movimien
 En este ejemplo, modifiqué el código original para hacer múltiples interpolaciones entre dos vectores (v1 y v2) y al mismo tiempo interpolar colores usando lerpColor(). Esto me permitió visualizar cómo evoluciona tanto la dirección como el color entre ambos vectores:
 
 ```js
+let v1, v2, v3;
+let t = 0;
+let speed = 0.01;
+
+function setup() {
+  createCanvas(400, 400);
+  v1 = createVector(50, 50);     // origen
+  v2 = createVector(300, 0);     // vector rojo (horizontal)
+  v3 = createVector(0, 300);     // vector azul (vertical)
+}
+
+function draw() {
+  background(200);
+
+  // Vectores rojo y azul desde el mismo origen
+  drawArrow(v1, v2, 'red');   // horizontal
+  drawArrow(v1, v3, 'blue');  // vertical
+
+  // Flecha verde desde punta del rojo hacia punta del azul
+  let puntaRojo = p5.Vector.add(v1, v2);
+  let direccionVerde = p5.Vector.sub(v3, v2); // v2 - v1
+  drawArrow(puntaRojo, direccionVerde, 'green');
+
+  // Interpolación entre v1 y v2 (desde el origen)
+  let interpolado = p5.Vector.lerp(v2, v3, t);
+  let colorIntermedio = lerpColor(color(255, 0, 0), color(0, 0, 255), t);
+  drawArrow(v1, interpolado, colorIntermedio);
+
+  // Actualizar valor de t
+  t += speed;
+  if (t > 1 || t < 0) {
+    speed *= -1;
+  }
+}
+
+function drawArrow(base, vec, myColor) {
+  push();
+  stroke(myColor);
+  strokeWeight(3);
+  fill(myColor);
+  translate(base.x, base.y);
+  line(0, 0, vec.x, vec.y);
+  rotate(vec.heading());
+  let arrowSize = 7;
+  translate(vec.mag() - arrowSize, 0);
+  triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);
+  pop();
+}
+```
 
 
 
