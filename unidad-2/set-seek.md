@@ -172,7 +172,11 @@ limit(valor) me permite restringir la magnitud máxima del vector. Si el vector 
 
 Limitan la velocidad máxima de un objeto o controlar la dirección del movimiento sin cambiar su magnitud.
 
+## Actividad 05.
+### Código que genera el resultado solicitado
+En este ejemplo, modifiqué el código original para hacer múltiples interpolaciones entre dos vectores (v1 y v2) y al mismo tiempo interpolar colores usando lerpColor(). Esto me permitió visualizar cómo evoluciona tanto la dirección como el color entre ambos vectores:
 
+```js
 
 
 
