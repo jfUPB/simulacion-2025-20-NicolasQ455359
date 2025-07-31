@@ -227,6 +227,67 @@ function drawArrow(base, vec, myColor) {
 }
 ```
 
+### ¿Cómo funciona lerp() y lerpColor()?
+En este ejercicio estoy usando interpolación lineal para mover una flecha entre dos vectores (v2 y v3), y cambiar su color en el proceso. Estos son los dos métodos clave:
+
+p5.Vector.lerp(v2, v3, t)
+
+Este método genera un nuevo vector que está entre v2 y v3, dependiendo del valor t (entre 0 y 1):
+
+* Si t = 0, el resultado es igual a v2.
+
+* Si t = 1, el resultado es igual a v3.
+
+* Si t = 0.5, el resultado es el punto medio entre ambos.
+
+En mi código:
+js
+Copiar
+Editar
+let interpolado = p5.Vector.lerp(v2, v3, t);
+Esto crea una flecha dinámica que se mueve suavemente de un vector al otro.
+
+🔹 lerpColor(color(255, 0, 0), color(0, 0, 255), t)
+Este método hace lo mismo pero con colores. Interpola el color entre rojo puro y azul puro según el mismo valor t.
+
+En el código:
+
+```js
+let colorIntermedio = lerpColor(color(255, 0, 0), color(0, 0, 255), t);
+```
+Esto me permite hacer que la flecha cambie de rojo a azul conforme se mueve entre v2 y v3. Cuando está en la mitad, el color es morado (mezcla entre ambos).
+
+### ¿Cómo se dibuja una flecha usando drawArrow()?
+Este es el método que uso para dibujar cualquier flecha en el canvas. Recibe tres parámetros:
+
+* base: punto de inicio (tipo p5.Vector)
+
+* vec: vector que indica la dirección y magnitud
+
+* myColor: el color de la flecha
+
+```js
+function drawArrow(base, vec, myColor) {
+  push();                         // Guarda el estado del dibujo
+  stroke(myColor);                // Color de línea
+  strokeWeight(3);                // Grosor de la línea
+  fill(myColor);                  // Color de la punta
+  translate(base.x, base.y);     // Mueve el origen a la base del vector
+  line(0, 0, vec.x, vec.y);       // Dibuja la línea del vector
+  rotate(vec.heading());         // Rota el sistema a la dirección del vector
+  let arrowSize = 7;             
+  translate(vec.mag() - arrowSize, 0); // Se posiciona al final del vector
+  triangle(                      // Dibuja la punta de flecha
+    0, arrowSize / 2,
+    0, -arrowSize / 2,
+    arrowSize, 0
+  );
+  pop();                          // Restaura el estado del dibujo
+}
+```
+Con translate() y rotate(), las flechas siempre apuntan en la dirección correcta sin importar el vector.
+
+
 
 
 
