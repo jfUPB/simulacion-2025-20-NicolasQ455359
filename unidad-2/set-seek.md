@@ -119,3 +119,70 @@ En el código de la actividad se está realizando un paso por referencia. El obj
 ### ¿Qué aprendí?
 Aprendí que en JavaScript, los objetos como p5.Vector se pasan por referencia. Eso significa que si modifico sus propiedades dentro de una función, esos cambios se reflejan en el objeto original. Esto es útil pero también requiere precaución, porque puede generar efectos secundarios no deseados si no se controla bien. También reforcé la diferencia entre paso por valor y paso por referencia, y cómo JavaScript maneja cada uno dependiendo del tipo de dato.
 
+## Actividad 04. 
+
+### ¿Para qué sirve el método mag()?
+El método .mag() me permite obtener la magnitud (o módulo) de un vector, es decir, su longitud desde el origen hasta su posición en el espacio. Lo uso cuando necesito saber qué tan grande es un vector, sin importar su dirección.
+
+### ¿Qué diferencia hay con magSq() y cuál es más eficiente?
+El método .magSq() calcula el cuadrado de la magnitud, sin aplicar la raíz cuadrada.
+Esto lo hace más eficiente que .mag() porque evita la raíz cuadrada. Uso .magSq() cuando quiero comparar magnitudes entre vectores sin necesidad de saber la magnitud exacta, por ejemplo para saber cuál es mayor
+
+### ¿Para qué sirve el método normalize()?
+El método .normalize() sirve para convertir un vector en unitario, que mantenga su dirección pero tenga magnitud igual a 1. Esto es muy útil cuando quiero trabajar con direcciones puras, sin que la longitud afecte el resultado. Lo uso, por ejemplo, para definir la dirección del movimiento o para combinarlo con otra magnitud.
+
+### Si un periodista me pregunta: “¿Para qué sirve el método dot()?”
+El método dot() sirve para calcular qué tanto apuntan dos vectores en la misma dirección y es clave para saber si son paralelos, perpendiculares o apuntan en sentido opuesto.
+
+### ¿Cuál es la diferencia entre dot() como método de instancia y como método estático?
+Versión de instancia:
+Se escribe así: v1.dot(v2)
+Se aplica sobre un vector y recibe otro como parámetro. Calcula el producto punto entre v1 y v2.
+
+Versión estática:
+Se escribe así: p5.Vector.dot(v1, v2)
+No necesito tener un objeto principal, paso directamente los dos vectores como argumentos.
+
+Ambas hacen lo mismo, solo cambia la forma en la que las llamo. La versión estática es útil cuando trabajo con vectores sin instancias previas o en cálculos más generales.
+
+### El periodista: “¿Cuál es la interpretación geométrica del producto cruz?”
+El producto cruz de dos vectores en 3D genera un nuevo vector perpendicular a ambos, cuya dirección sigue la regla de la mano derecha y cuya magnitud representa el área del paralelogramo formado por los vectores originales.
+
+* Magnitud: igual al área del paralelogramo que forman los dos vectores.
+
+* Dirección: perpendicular a ambos (normal al plano).
+
+* Orientación: sigue la regla de la mano derecha (si a apunta hacia la derecha y b hacia adelante, a × b apunta hacia arriba).
+
+### ¿Para qué me puede servir el método dist()?
+El método .dist() sirve para calcular la distancia entre dos vectores (o puntos en el espacio). Es muy útil, por ejemplo, cuando quiero saber si un objeto está cerca de otro, como detectar colisiones, seguir un objetivo o medir separación entre entidades.
+
+Ejemplo:
+```js
+let d = p5.Vector.dist(pos1, pos2);
+if (d < 50) {
+  // los objetos están cerca
+}
+```
+
+### ¿Para qué sirven los métodos normalize() y limit()?
+normalize() lo uso para obtener solo la dirección del vector, manteniendo su forma pero con magnitud igual a 1.
+
+limit(valor) me permite restringir la magnitud máxima del vector. Si el vector es más largo que ese valor, se recorta, pero si es más corto, se deja igual.
+
+Limitan la velocidad máxima de un objeto o controlar la dirección del movimiento sin cambiar su magnitud.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
