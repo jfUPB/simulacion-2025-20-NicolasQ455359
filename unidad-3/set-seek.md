@@ -70,6 +70,34 @@ Es necesario multiplicar la aceleración por cero al final de cada frame para re
 
 Multiplicar la aceleración por cero al final de update() asegura que no se acumule información de aceleración de frames anteriores. La aceleración debe ser calculada en cada frame en función de las fuerzas actuales, no de las pasadas. Al hacerlo, evitamos que fuerzas previas interfieran con los cálculos del siguiente frame, lo que garantizará que el objeto se mueva correctamente en cada actualización sin influencias incorrectas.
 
+## Actividad 07. 
+
+Lo que ocurre es que al pasar un objeto como referencia, cualquier modificación en esa referencia dentro de la función afecta al objeto original. En el caso de la fuerza, queremos modificar solo la copia de la fuerza en lugar de alterar el objeto original, por eso la solución es hacer una copia del vector force antes de dividirlo.
+
+## Actividad 08. 
+
+### ¿Cuál es la diferencia entre las dos líneas?
+
+Primera línea (let friction = this.velocity.copy();): Aquí estamos creando una copia independiente de this.velocity. El método copy() crea un nuevo objeto con los mismos valores, lo que significa que friction y this.velocity son dos objetos separados. Los cambios en uno no afectarán al otro.
+
+Segunda línea (let friction = this.velocity;): En este caso, estamos referenciando el mismo objeto. Esto significa que friction y this.velocity apuntan al mismo objeto en memoria. Cualquier cambio en uno de ellos afectará al otro, ya que ambos son el mismo objeto.
+
+### ¿Qué podría salir mal con let friction = this.velocity;?
+
+El problema con esta línea es que friction y this.velocity comparten el mismo objeto en memoria. Si modificas friction, también estarás modificando this.velocity, lo cual puede generar resultados inesperados si no se desea que ambos objetos estén vinculados. Si necesitas que friction sea independiente de this.velocity, esta asignación no funcionará correctamente, ya que ambas variables afectarán al mismo objeto.
+
+### ¿Cuál es la diferencia entre copiar por VALOR y por REFERENCIA?
+
+Copia por valor: Cuando se hace una copia por valor, se crea una nueva instancia del objeto o valor. Cualquier cambio en la copia no afecta al original. Por ejemplo, en let friction = this.velocity.copy();, friction es una copia independiente de this.velocity.
+
+Copia por referencia: Cuando se hace una copia por referencia, las dos variables apuntan al mismo objeto en memoria. Los cambios realizados en una variable afectan a la otra, ya que ambas hacen referencia al mismo objeto. Esto ocurre en let friction = this.velocity;, donde friction y this.velocity están referenciando el mismo objeto.
+
+En el fragmento de código, ¿cuándo es por VALOR y cuándo por REFERENCIA?
+Por valor: En la línea let friction = this.velocity.copy();, this.velocity.copy() crea una copia independiente del objeto, por lo que estamos trabajando con copia por valor.
+
+Por referencia: En la línea let friction = this.velocity;, this.velocity no se copia, sino que se asigna directamente a friction. Ambas variables apuntan al mismo objeto en memoria, lo que significa que estamos trabajando con copia por referencia.
+
+
 
 
 
