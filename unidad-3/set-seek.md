@@ -97,6 +97,89 @@ Por valor: En la línea let friction = this.velocity.copy();, this.velocity.copy
 
 Por referencia: En la línea let friction = this.velocity;, this.velocity no se copia, sino que se asigna directamente a friction. Ambas variables apuntan al mismo objeto en memoria, lo que significa que estamos trabajando con copia por referencia.
 
+## Actividad 09. 
+### 1.1 Fricción - Cómo modelé la fuerza:
+Para modelar la fricción, creé partículas que se generan cuando el usuario hace clic en el lienzo. Cada partícula se mueve de manera aleatoria, pero a medida que el tiempo pasa, la fricción actúa sobre ellas, reduciendo su velocidad gradualmente hasta que se detienen. La fricción se modela utilizando el mult(friction) sobre el vector de velocidad de cada partícula, lo que disminuye su velocidad con cada actualización del cuadro. Esto simula cómo la fricción reduce el movimiento de un objeto con el tiempo.
+
+### 1.2 Conceptualmente cómo se relaciona la fricción con la obra:
+
+La fricción es la fuerza que se opone al movimiento de las partículas y, al igual que en la vida real, va reduciendo su velocidad hasta que finalmente se detienen. En esta obra generativa, el usuario puede interactuar con las partículas (empujándolas al hacer clic), y al observarlas, puede ver cómo la fricción actúa lentamente sobre ellas, disipando su energía. Esto refleja visualmente cómo la fricción reduce el movimiento y el dinamismo de los objetos con el tiempo.
+
+[Fricción - Proyecto en p5.js](https://editor.p5js.org/NicolasQ455359/sketches/NYPEdrOJt)
+
+### 1.3 Codigo
+```javascript
+let particles = [];
+let friction = 0.98; // Coeficiente de fricción
+
+function setup() {
+  createCanvas(600, 600);
+}
+
+function draw() {
+  background(0);
+  
+  // Crear partículas cada vez que se hace clic
+  if (mouseIsPressed) {
+    particles.push(new Particle(mouseX, mouseY));
+  }
+  
+  // Actualizar y dibujar todas las partículas
+  for (let i = particles.length - 1; i >= 0; i--) {
+    particles[i].applyFriction();
+    particles[i].update();
+    particles[i].display();
+    
+    // Eliminar partículas que se detienen
+    if (particles[i].isStopped()) {
+      particles.splice(i, 1);
+    }
+  }
+}
+
+// Clase para las partículas
+class Particle {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = createVector(random(-3, 3), random(-3, 3));
+    this.acc = createVector(0, 0);
+    this.size = random(5, 10);
+  }
+  
+  applyFriction() {
+    // La fricción reduce la velocidad de la partícula
+    this.vel.mult(friction);
+  }
+  
+  update() {
+    this.pos.add(this.vel);
+  }
+  
+  display() {
+    fill(255, 150);
+    noStroke();
+    ellipse(this.pos.x, this.pos.y, this.size);
+  }
+  
+  isStopped() {
+    return this.vel.mag() < 0.05;
+  }
+}
+```
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/fc4534c6-7826-48e7-945b-77a2f232bf07" />
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
