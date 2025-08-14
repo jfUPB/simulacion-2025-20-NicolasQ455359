@@ -168,6 +168,126 @@ class Particle {
 ```
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/fc4534c6-7826-48e7-945b-77a2f232bf07" />
 
+### 2.1. Resistencia del aire y fluidos - Cómo modelé la fuerza:
+Para modelar la resistencia del aire, creé un barco que se mueve por el canvas. Este barco tiene una fuerza de viento que lo impulsa en una dirección, pero la resistencia del aire actúa para desacelerarlo. La resistencia se aplica de manera que siempre intenta frenar el movimiento del barco, lo que se traduce en un cambio en su velocidad conforme se desplaza por el fluido. Además, añadí un fondo fluido que simula agua o aire en movimiento, haciendo que la interacción con el barco se vea más natural y visualmente atractiva.
+
+### 2.2 Cómo se relaciona la fuerza con la obra generativa:
+La resistencia del aire es una fuerza que se opone al movimiento de los objetos que pasan a través de un fluido. En la obra generativa, el barco se mueve por el canvas impulsado por el viento, pero a medida que avanza, la resistencia del aire lo desacelera, modificando su velocidad. El barco cambia de dirección al tocar los bordes del canvas, lo que genera un movimiento continuo e impredecible, representando cómo los objetos se ven afectados por la resistencia del fluido a lo largo del tiempo. Este comportamiento es generativo, ya que cada vez que se ejecuta, el barco se mueve de manera diferente según las fuerzas aplicadas.
+
+[Resistencia del aire y fluidos – Proyecto en p5.js](https://editor.p5js.org/NicolasQ455359/sketches/I0ehdDuOQ)
+
+### 2.3 Codigo
+```javascript
+let boat;
+let wind;
+let resistance = 0.1;  // Resistencia del aire ajustada para hacerlo más visual
+
+function setup() {
+  createCanvas(600, 400);
+  boat = new Boat(width / 4, height / 2);  // El barco comienza en una posición inicial
+  wind = createVector(0.1, 0); // Dirección del viento hacia la derecha
+  noStroke();
+}
+
+function draw() {
+  // Fondo dinámico que simula el agua (con un toque de fluido)
+  drawFluidBackground();
+  
+  boat.applyForce(wind); // Aplica la fuerza del viento al barco
+  boat.applyResistance(resistance); // Aplica la resistencia del aire
+  boat.update(); // Actualiza la posición y el movimiento del barco
+  boat.display(); // Dibuja el barco en la pantalla
+
+  // Asegura que el barco no se salga del canvas
+  boat.checkEdges();  // Verifica si toca el borde
+  boat.limitToCanvas(); // Asegura que no se salga del canvas
+}
+
+// Función para dibujar un fondo que simula el agua
+function drawFluidBackground() {
+  let waterColor = color(0, 102, 204, 150); // Azul agua translúcido
+  fill(waterColor);
+  for (let i = 0; i < width; i += 20) {
+    let offset = map(sin(i * 0.02 + frameCount * 0.05), -1, 1, -5, 5); // Movimiento de agua
+    rect(i, 0, 20, height + offset); // Representando las ondas de agua
+  }
+}
+
+// Clase para el barco
+class Boat {
+  constructor(x, y) {
+    this.position = createVector(x, y); // Posición inicial del barco
+    this.velocity = createVector(2, 1); // Velocidad inicial (aquí está moviéndose en ambas direcciones)
+    this.acceleration = createVector(0, 0); // Aceleración inicial
+    this.size = 50; // Tamaño del barco
+    this.angle = 0; // Ángulo de inclinación
+  }
+
+  // Aplica una fuerza al barco
+  applyForce(force) {
+    let f = force.copy();
+    this.acceleration.add(f);
+  }
+
+  // Aplica la resistencia del aire sobre el barco
+  applyResistance(resistance) {
+    let resistanceForce = this.velocity.copy();
+    resistanceForce.normalize(); // Normaliza la velocidad
+    resistanceForce.mult(-resistance); // Aplica la resistencia en dirección opuesta
+    this.applyForce(resistanceForce); // Suma la resistencia
+  }
+
+  // Actualiza la posición del barco
+  update() {
+    // Movimiento aleatorio del barco en el fluido (simula interacción)
+    let randomForce = createVector(random(-0.2, 0.2), random(-0.2, 0.2));
+    this.applyForce(randomForce);
+
+    // Actualización de la velocidad y la posición del barco
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+
+    // Limita la velocidad del barco
+    this.velocity.limit(3);
+    this.acceleration.mult(0); // Reinicia la aceleración
+  }
+
+  // Limita el movimiento del barco para que no se salga del canvas
+  limitToCanvas() {
+    if (this.position.x < 0) this.position.x = 0;
+    if (this.position.x > width) this.position.x = width;
+    if (this.position.y < 0) this.position.y = 0;
+    if (this.position.y > height) this.position.y = height;
+  }
+
+  // Cambia la dirección del barco cuando toca el borde
+  checkEdges() {
+    // Detecta si el barco toca el borde en los 4 lados
+    if (this.position.x <= 0 || this.position.x >= width) {
+      this.velocity.x *= -1; // Invertir la dirección en X cuando toca el borde horizontal
+    }
+    if (this.position.y <= 0 || this.position.y >= height) {
+      this.velocity.y *= -1; // Invertir la dirección en Y cuando toca el borde vertical
+    }
+  }
+
+  // Dibuja el barco en la pantalla
+  display() {
+    fill(255, 100, 100); // Color del barco
+    push();
+    translate(this.position.x, this.position.y); // Mueve el barco a su posición
+    rotate(this.angle); // Rota el barco para simular el viento
+    // Dibuja el barco (como un triángulo que representa el casco)
+    triangle(-this.size / 2, this.size / 4, 
+             this.size / 2, this.size / 4, 
+             0, -this.size / 2);
+    pop();
+  }
+}
+```
+<img width="1869" height="884" alt="image" src="https://github.com/user-attachments/assets/39cf1676-4b5d-4d3f-ba9d-55ea56c8080a" />
+
+
 
 
 
