@@ -287,6 +287,110 @@ class Boat {
 ```
 <img width="1869" height="884" alt="image" src="https://github.com/user-attachments/assets/39cf1676-4b5d-4d3f-ba9d-55ea56c8080a" />
 
+### 3.1 Atracción Gravitacional - Cómo modelé la fuerza:
+Para modelar la atracción gravitacional, creé varios planetas que interactúan entre sí en un espacio bidimensional. La gravedad se aplica entre los planetas utilizando la ley de la gravitación universal de Newton. Cada planeta ejerce una fuerza gravitacional sobre los demás en función de sus masas y la distancia entre ellos. El movimiento de los planetas es afectado por esta fuerza, lo que hace que cambien constantemente su trayectoria. Además, agregué una función para hacer que los planetas rebote al llegar a los bordes del canvas, para que siempre permanezcan dentro del lienzo.
+
+### 3.2 Cómo se relaciona la fuerza con la obra generativa:
+La gravedad es una fuerza que atrae a los cuerpos con masa entre sí. En esta obra generativa, los planetas se mueven de manera orgánica, siendo atraídos por la gravedad de los otros planetas, lo que hace que sus trayectorias cambien constantemente. Como se trata de una obra generativa, cada vez que ejecutes el código, los planetas tendrán trayectorias diferentes, ya que la interacción entre ellos y la gravedad cambia constantemente. Además, al tocar los bordes del canvas, el planeta rebota, lo que da un efecto visual dinámico y evita que los planetas salgan del lienzo, creando una simulación siempre nueva y diferente.
+
+[Atracción Gravitacional – Proyecto en p5.js](https://editor.p5js.org/NicolasQ455359/sketches/-g9XGSeMj)
+
+### 3.3 Codigo
+```javascript
+let planets = [];
+let gravityConstant = 0.1;
+
+function setup() {
+  createCanvas(600, 600);
+  noStroke();
+
+  // Crear planetas con posiciones, velocidades y masas aleatorias
+  for (let i = 0; i < 5; i++) {
+    let x = random(width);
+    let y = random(height);
+    let mass = random(5, 20);
+    let velocity = createVector(random(-1, 1), random(-1, 1)); // Velocidades aleatorias
+    planets.push(new Planet(x, y, mass, velocity));
+  }
+}
+
+function draw() {
+  background(0);
+
+  // Dibujar estrellas de fondo para hacerlo más atractivo
+  drawStars();
+
+  // Actualizar y mostrar cada planeta
+  for (let i = 0; i < planets.length; i++) {
+    planets[i].update(planets);
+    planets[i].display();
+    planets[i].checkEdges(); // Verifica si el planeta toca el borde
+  }
+}
+
+// Función para dibujar un fondo estrellado
+function drawStars() {
+  fill(255, 255, 255, 50);
+  for (let i = 0; i < width; i += random(1, 5)) {
+    ellipse(random(width), random(height), 2, 2); // Crear estrellas
+  }
+}
+
+// Clase para los planetas
+class Planet {
+  constructor(x, y, mass, velocity) {
+    this.position = createVector(x, y);
+    this.velocity = velocity;
+    this.mass = mass;
+    this.acceleration = createVector(0, 0);
+    this.radius = this.mass * 2;  // Tamaño del planeta en función de su masa
+    this.color = color(random(100, 255), random(100, 255), random(100, 255));
+  }
+
+  // Actualiza la posición y la velocidad del planeta
+  update(planets) {
+    let force = createVector(0, 0);
+
+    // Calcular la gravedad de cada otro planeta
+    for (let i = 0; i < planets.length; i++) {
+      if (planets[i] != this) {
+        let direction = p5.Vector.sub(planets[i].position, this.position); // Dirección entre los planetas
+        let distance = direction.mag();
+        distance = constrain(distance, 20, 150); // Evitar la división por cero
+
+        let strength = gravityConstant * (this.mass * planets[i].mass) / (distance * distance);
+        direction.setMag(strength);  // Magnitud de la fuerza gravitacional
+        force.add(direction);  // Sumar la fuerza al total
+      }
+    }
+
+    // Aplicar la aceleración y actualizar la velocidad y la posición
+    this.acceleration = force.copy().div(this.mass); // F = ma, entonces a = F / m
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+  }
+
+  // Muestra el planeta en la pantalla
+  display() {
+    fill(this.color);
+    ellipse(this.position.x, this.position.y, this.radius, this.radius); // Dibujar el planeta
+  }
+
+  // Cambia la dirección del planeta cuando toca el borde del canvas
+  checkEdges() {
+    if (this.position.x <= 0 || this.position.x >= width) {
+      this.velocity.x *= -1; // Invertir la dirección en X cuando toca el borde horizontal
+    }
+    if (this.position.y <= 0 || this.position.y >= height) {
+      this.velocity.y *= -1; // Invertir la dirección en Y cuando toca el borde vertical
+    }
+  }
+}
+```
+<img width="1919" height="1073" alt="image" src="https://github.com/user-attachments/assets/8a6432da-6142-4475-aa00-cf41c9e3dd93" />
+
+
+
 
 
 
