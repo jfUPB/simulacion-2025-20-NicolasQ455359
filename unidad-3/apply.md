@@ -13,7 +13,7 @@ Vectores: Para calcular posiciones, velocidades, aceleraciones y fuerzas entre l
 
 Random: Para generar las posiciones iniciales, masas y colores de los cuerpos de manera dinámica y distinta cada vez que se ejecuta la simulación.
 
-De esta forma, el sistema simula la complejidad de un n-cuerpos mientras genera un efecto visual similar a un móvil cinético, donde la posición de un elemento afecta a todo el conjunto.
+El sistema simula la complejidad de un n-cuerpos mientras genera un efecto visual similar a un móvil cinético, donde la posición de un elemento afecta a todo el conjunto.
 
 [Simulación de n-cuerpos en p5.js](https://editor.p5js.org/NicolasQ455359/sketches/9CmCLTrLn)
 
@@ -107,6 +107,7 @@ function mouseDragged() {
 }
 ```
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/cb7bd9f7-919e-4f46-bb96-c3ccbf8064a6" />
+
 
 
 
