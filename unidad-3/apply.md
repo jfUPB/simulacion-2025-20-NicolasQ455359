@@ -106,7 +106,9 @@ function mouseDragged() {
   }
 }
 ```
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/cb7bd9f7-919e-4f46-bb96-c3ccbf8064a6" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/12e3026e-2a4f-4a49-8cc7-71f34b14f31e" />
+
+
 
 
 
