@@ -193,6 +193,7 @@ class Particle {
 
 <img width="638" height="360" alt="image" src="https://github.com/user-attachments/assets/b49b87e1-e172-4a0c-99ea-be3c12a311b1" />
 
+
 ### Ejemplo Ejemplo 4.5 – Particle System with Inheritance and Polymorphism
 
 Gestión de creación y desaparición:
@@ -204,10 +205,117 @@ Cómo lo apliqué: Modifiqué las subclases para que las partículas hereden pro
 
 Por qué: La aleatoriedad es clave en las simulaciones generativas, porque da riqueza visual y diversidad de comportamientos dentro de un mismo sistema.
 
+[Sketch en p5.js – NicolasQ455359 (ID: sY6e5RwcK)](https://editor.p5js.org/NicolasQ455359/sketches/sY6e5RwcK)
+
+```javascript
+let ps;
+
+function setup() {
+  createCanvas(640, 360);
+  ps = new ParticleSystem(createVector(width/2, height/2));
+}
+
+function draw() {
+  background(12);
+  ps.addParticle();        // emitir una por frame
+  ps.run();
+
+  fill(255);
+  text('Pulsa espacio para alternar tipo', 10, 20);
+}
+
+function keyPressed() {
+  if (key === ' ') ps.toggleType();
+}
+
+class ParticleSystem {
+  constructor(origin) {
+    this.origin = origin.copy();
+    this.particles = [];
+    this.useConfetti = false;
+  }
+
+  toggleType() {
+    this.useConfetti = !this.useConfetti;
+  }
+
+  addParticle() {
+    if (this.useConfetti) {
+      this.particles.push(new Confetti(this.origin.x, this.origin.y));
+    } else {
+      this.particles.push(new Particle(this.origin.x, this.origin.y));
+    }
+  }
+
+  run() {
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      let p = this.particles[i];
+      p.update();
+      p.display();
+      if (p.isDead()) this.particles.splice(i, 1);
+    }
+  }
+}
+
+class Particle {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D().mult(random(0.5, 2.2));
+    this.acc = createVector(0, 0.03);
+    this.lifespan = 255;
+    this.size = random(4, 8);              // aleatoriedad en tamaño
+    this.col = color(random(180,255),      // y color
+                     random(100,220),
+                     random(180,255));
+  }
+
+  update() {
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.lifespan -= 2;
+  }
+
+  display() {
+    noStroke();
+    fill(red(this.col), green(this.col), blue(this.col), this.lifespan);
+    ellipse(this.pos.x, this.pos.y, this.size);
+  }
+
+  isDead() { return this.lifespan <= 0; }
+}
+
+// Subclase: cambia la forma y rota
+class Confetti extends Particle {
+  constructor(x, y) {
+    super(x, y);
+    this.angle = random(TWO_PI);
+    this.spin = random(-0.1, 0.1);
+    this.w = random(4, 10);
+    this.h = random(2, 6);
+  }
+
+  update() {
+    super.update();
+    this.angle += this.spin;
+  }
+
+  display() {
+    push();
+    translate(this.pos.x, this.pos.y);
+    rotate(this.angle);
+    noStroke();
+    fill(red(this.col), green(this.col), blue(this.col), this.lifespan);
+    rectMode(CENTER);
+    rect(0, 0, this.w, this.h);
+    pop();
+  }
+}
+```
 
 <img width="637" height="354" alt="Captura de pantalla 2025-09-18 084821" src="https://github.com/user-attachments/assets/063afef6-b015-44d5-b9bf-dba97979ff1b" />
 
 <img width="636" height="355" alt="image" src="https://github.com/user-attachments/assets/59784027-d2b3-4b83-b671-f84c248e0c44" />
+
 
 
 
