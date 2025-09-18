@@ -193,6 +193,23 @@ class Particle {
 
 <img width="638" height="360" alt="image" src="https://github.com/user-attachments/assets/b49b87e1-e172-4a0c-99ea-be3c12a311b1" />
 
+### Ejemplo Ejemplo 4.5 – Particle System with Inheritance and Polymorphism
+
+Gestión de creación y desaparición:
+Se usan clases hijas (por ejemplo, Confetti) que heredan de Particle. Cada partícula tiene un tiempo de vida, y cuando muere, se elimina del arreglo.
+
+Concepto aplicado: Aleatoriedad (random).
+
+Cómo lo apliqué: Modifiqué las subclases para que las partículas hereden propiedades con variación en tamaño y color mediante random().
+
+Por qué: La aleatoriedad es clave en las simulaciones generativas, porque da riqueza visual y diversidad de comportamientos dentro de un mismo sistema.
+
+
+<img width="637" height="354" alt="Captura de pantalla 2025-09-18 084821" src="https://github.com/user-attachments/assets/063afef6-b015-44d5-b9bf-dba97979ff1b" />
+
+<img width="636" height="355" alt="image" src="https://github.com/user-attachments/assets/59784027-d2b3-4b83-b671-f84c248e0c44" />
+
+
 
 
 
