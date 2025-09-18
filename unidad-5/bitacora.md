@@ -410,6 +410,124 @@ class Particle {
 ```
 <img width="639" height="357" alt="image" src="https://github.com/user-attachments/assets/3532ebcf-f953-430a-a07f-5f00a9b8c9e8" />
 
+### Ejemplo 4.7 – Particle System with a Repeller
+
+Gestión de creación y desaparición:
+Además de las partículas con vida limitada, aquí se agrega un “repeller” (repulsor) que modifica las trayectorias. Las partículas siguen muriendo por vida útil y se eliminan.
+
+Concepto aplicado: Perlin Noise.
+
+Cómo lo apliqué: Utilicé noise() para modificar la posición inicial del emisor de partículas, generando un movimiento oscilatorio y natural en el punto de spawn.
+
+Por qué: El ruido Perlin permite evitar trayectorias artificiales o repetitivas, aportando variación orgánica y más realismo en sistemas generativos.
+
+[Sketch en p5.js – NicolasQ455359 (ID: IEpR4G3XE)](https://editor.p5js.org/NicolasQ455359/sketches/IEpR4G3XE)
+
+```javascript
+let ps;
+let repeller;
+let t = 0; // tiempo para el ruido
+
+function setup() {
+  createCanvas(640, 360);
+  ps = new ParticleSystem(createVector(width/2, height/2));
+  repeller = new Repeller(width/2, height/2);
+}
+
+function draw() {
+  background(8);
+
+  // Emisión con offset por ruido Perlin
+  let nx = map(noise(t), 0, 1, -80, 80);
+  let ny = map(noise(t + 1000), 0, 1, -80, 80);
+  ps.origin.set(width/2 + nx, height/2 + ny);
+  ps.addParticle();
+  t += 0.01;
+
+  // Aplicar fuerza de repulsión a cada partícula
+  for (let p of ps.particles) {
+    let f = repeller.repel(p);
+    p.applyForce(f);
+  }
+
+  ps.run();
+  repeller.display();
+}
+
+class ParticleSystem {
+  constructor(origin) {
+    this.origin = origin.copy();
+    this.particles = [];
+  }
+
+  addParticle() {
+    this.particles.push(new Particle(this.origin.x, this.origin.y));
+  }
+
+  run() {
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      let p = this.particles[i];
+      p.update();
+      p.display();
+      if (p.isDead()) this.particles.splice(i, 1);
+    }
+  }
+}
+
+class Particle {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D().mult(random(0.5, 1.5));
+    this.acc = createVector(0, 0);
+    this.lifespan = 240;
+    this.size = 5;
+  }
+
+  applyForce(f) { this.acc.add(f); }
+
+  update() {
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+    this.lifespan -= 2;
+  }
+
+  display() {
+    noStroke();
+    fill(120, 200, 255, this.lifespan);
+    circle(this.pos.x, this.pos.y, this.size);
+  }
+
+  isDead() { return this.lifespan <= 0; }
+}
+
+class Repeller {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.strength = 200; // constante de repulsión
+    this.r = 20;
+  }
+
+  repel(particle) {
+    let dir = p5.Vector.sub(this.pos, particle.pos);
+    let d = constrain(dir.mag(), 5, 100);
+    dir.normalize();
+    // Fuerza de repulsión (invertida)
+    let force = dir.mult(-this.strength / (d * d));
+    return force;
+  }
+
+  display() {
+    noFill();
+    stroke(255, 80);
+    circle(this.pos.x, this.pos.y, this.r * 2);
+  }
+}
+```
+
+<img width="637" height="358" alt="image" src="https://github.com/user-attachments/assets/9d5b6c80-5f5e-46ba-9972-74d6cb336b6a" />
+
+
 
 
 
