@@ -13,6 +13,12 @@ Cómo lo apliqué: Trasladé el origen al centro de la pantalla y añadí una ro
 
 Por qué: Quise repasar cómo los sistemas de coordenadas modifican la percepción espacial, creando un efecto dinámico y diferente al flujo lineal habitual de partículas.
 
+Concepto aplicado: Transformaciones (translate, rotate).
+
+Cómo lo apliqué: Trasladé el origen al centro de la pantalla y añadí una rotación constante para que las partículas se generaran girando en torno al punto de emisión.
+
+Por qué: Quise repasar cómo los sistemas de coordenadas modifican la percepción espacial, creando un efecto dinámico y diferente al flujo lineal habitual de partículas.
+
 [Sketch en p5.js – NicolasQ455359 (ID: ABsxbw5fk)](https://editor.p5js.org/NicolasQ455359/sketches/ABsxbw5fk)
 
 ### Codigo: 
@@ -88,6 +94,7 @@ class Particle {
 }
 ```
 <img width="856" height="566" alt="image" src="https://github.com/user-attachments/assets/2452d262-44d4-4154-a41f-c7ea7e7fd467" />
+
 
 
 
