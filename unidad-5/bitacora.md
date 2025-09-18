@@ -89,7 +89,7 @@ class Particle {
 ```
 <img width="856" height="566" alt="image" src="https://github.com/user-attachments/assets/2452d262-44d4-4154-a41f-c7ea7e7fd467" />
 
-### 4.4 — System of Systems
+### Ejemplo 4.4 - System of Systems
 
 Gestión de creación y desaparición:
 Aquí no solo hay partículas, sino múltiples sistemas de partículas. Cada sistema crea sus partículas de manera independiente y las gestiona internamente (vida útil y eliminación).
@@ -192,6 +192,7 @@ class Particle {
 ```
 
 <img width="638" height="360" alt="image" src="https://github.com/user-attachments/assets/b49b87e1-e172-4a0c-99ea-be3c12a311b1" />
+
 
 
 
