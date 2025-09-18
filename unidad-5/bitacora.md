@@ -317,6 +317,103 @@ class Confetti extends Particle {
 <img width="636" height="355" alt="image" src="https://github.com/user-attachments/assets/59784027-d2b3-4b83-b671-f84c248e0c44" />
 
 
+### Ejemplo 4.6 – Particle System with Forces
+
+Gestión de creación y desaparición:
+Cada partícula está sujeta a fuerzas (por ejemplo, gravedad). La desaparición se gestiona igual: una vez que la vida de la partícula llega a cero, se elimina del arreglo.
+
+Concepto aplicado: Vectores y fuerzas.
+
+Cómo lo apliqué: Además de la gravedad, añadí una fuerza de viento horizontal dependiente de la posición del mouse (map(mouseX, ...)) y la apliqué a todas las partículas.
+
+Por qué: Quise repasar cómo se construye la dinámica de un sistema físico sumando fuerzas vectoriales, logrando que el comportamiento responda tanto a la física como a la interacción del usuario.
+
+[Sketch en p5.js – NicolasQ455359 (ID: 1DLZplVcW)](https://editor.p5js.org/NicolasQ455359/sketches/1DLZplVcW)
+
+```javascript
+// 4.6 Forces — gravedad + viento controlado por mouseX
+let ps;
+let gravity;
+
+function setup() {
+  createCanvas(640, 360);
+  ps = new ParticleSystem(createVector(width/2, 40));
+  gravity = createVector(0, 0.08);
+}
+
+function draw() {
+  background(15);
+
+  // Viento según mouseX (-0.2 a 0.2)
+  let wind = createVector(map(mouseX, 0, width, -0.2, 0.2), 0);
+
+  // Emitir y aplicar fuerzas a cada partícula
+  ps.addParticle();
+  ps.applyForceAll(gravity);
+  ps.applyForceAll(wind);
+  ps.run();
+
+  fill(255);
+  text(`Viento x: ${wind.x.toFixed(2)}`, 10, 20);
+}
+
+class ParticleSystem {
+  constructor(origin) {
+    this.origin = origin.copy();
+    this.particles = [];
+  }
+
+  addParticle() {
+    this.particles.push(new Particle(this.origin.x, this.origin.y));
+  }
+
+  applyForceAll(force) {
+    for (let p of this.particles) p.applyForce(force);
+  }
+
+  run() {
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      let p = this.particles[i];
+      p.update();
+      p.display();
+      if (p.isDead()) this.particles.splice(i, 1);
+    }
+  }
+}
+
+class Particle {
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+    this.vel = createVector(random(-1, 1), random(-2, 0));
+    this.acc = createVector(0, 0);
+    this.lifespan = 220;
+    this.size = random(3, 6);
+  }
+
+  applyForce(f) { this.acc.add(f); }
+
+  update() {
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+    this.lifespan -= 2.2;
+  }
+
+  display() {
+    noStroke();
+    fill(255, 220, 120, this.lifespan);
+    ellipse(this.pos.x, this.pos.y, this.size);
+  }
+
+  isDead() { return this.lifespan <= 0; }
+}
+```
+<img width="639" height="357" alt="image" src="https://github.com/user-attachments/assets/3532ebcf-f953-430a-a07f-5f00a9b8c9e8" />
+
+
+
+
+
 
 
 
