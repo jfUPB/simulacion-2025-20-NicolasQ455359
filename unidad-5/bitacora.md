@@ -883,6 +883,25 @@ class Portal {
 <img width="900" height="561" alt="Captura de pantalla 2025-09-18 103327" src="https://github.com/user-attachments/assets/390ef550-1150-4615-8543-70f5ea5a4c9f" />
 
 
+## Autoevaluación según la rúbrica
+
+### 1. Investigación y experimentación (Actividad 2)
+Revisé cada uno de los ejemplos (4.2 al 4.7) y expliqué cómo se crean y desaparecen las partículas y cómo se maneja la memoria en cada caso. Además, en todos hice modificaciones aplicando conceptos de unidades anteriores, como transformaciones, interacción, aleatoriedad, fuerzas y Perlin noise. También expliqué qué concepto apliqué, cómo lo apliqué y por qué. Por eso considero que cumplí con lo que pedía la rúbrica en el nivel más alto.
+
+### 2. Intención y diseño (Actividad 3)
+Desde el inicio definí un concepto claro para mi obra: las partículas representan energías o recuerdos que se mueven en el espacio y son influenciadas por corrientes invisibles y portales que atraen o repelen. Lo que quiero comunicar es que cada acción nuestra deja una huella y transforma el entorno. Antes de programar pensé la idea, hice bocetos simples y definí la interacción, lo que me ayudó a darle forma a la obra final.
+
+### 3. Aplicación técnica (Código de Actividad 3)
+El código lo organicé en clases y subclases, aplicando herencia y polimorfismo. Tengo tres tipos de partículas con comportamientos distintos y todas se gestionan de manera correcta. Además, utilicé varios conceptos vistos en las unidades anteriores: fuerzas, transformaciones, aleatoriedad y ruido. También controlé la memoria eliminando las partículas cuando mueren o salen de la pantalla.
+
+### 4. Calidad de la obra final (Entregado)
+La obra es estable, funciona sin errores y responde bien a la interacción en tiempo real. El mouse y el teclado afectan directamente la simulación, y los portales permiten cambiar el flujo de las partículas de manera visualmente atractiva. El resultado final es variado, dinámico y coherente con el concepto que definí al inicio.
+
+### Nota propuesta
+
+Con base en la rúbrica considero que mi trabajo cumple con lo que se pedia, por eso me propongo una nota de 5.0 / 5.0, ya que el proceso estuvo completo, la obra es estable, tiene interacción clara, aplica los conceptos de manera intencionada y el diseño comunica la idea que quería expresar.
+
+
 
 
 
