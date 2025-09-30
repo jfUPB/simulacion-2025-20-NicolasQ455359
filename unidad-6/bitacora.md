@@ -2,10 +2,12 @@
 
 ## Actividad 01.
 <img width="474" height="474" alt="image" src="https://github.com/user-attachments/assets/f14613e5-f3bd-46ba-aaa4-95655ec0684e" />
+
 . Por qué me llama la atención: me gusta cómo esas líneas, aunque son muchas, tienen una dirección orgánica. Hay zonas donde se separan, otras donde se juntas; parecen corrientes visuales que se doblan suavemente. Esa tensión entre orden y variación me parece muy poderosa.
 
 <img width="474" height="474" alt="image" src="https://github.com/user-attachments/assets/e8db6a53-9550-4d96-bb71-da2811b0338c" />
-Por qué me llama la atención: aquí se acentúa más la densidad, el contraste y el movimiento. Las líneas parecen viento, polvo, o una fuerza invisible dibujando en el espacio. Esa textura me inspira porque siento que “escucho” el movimiento mientras miro.
+
+.Por qué me llama la atención: aquí se acentúa más la densidad, el contraste y el movimiento. Las líneas parecen viento, polvo, o una fuerza invisible dibujando en el espacio. Esa textura me inspira porque siento que “escucho” el movimiento mientras miro.
 
 ## Actividad 02.
 
@@ -47,6 +49,7 @@ Efecto observado (comportamiento):
 Los agentes empezaron a orbitar el centro, dibujando trayectorias curvas y bastante limpias.
 El movimiento se vuelve coherente globalmente (todos giran en el mismo sentido), menos errático que con noise.
 Si subo maxspeed, las órbitas se alargan y sienten más “energía”; si bajo maxforce, tardan más en alinearse con la curva.
+
 
 
 
