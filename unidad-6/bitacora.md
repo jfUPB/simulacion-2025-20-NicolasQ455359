@@ -50,6 +50,242 @@ Los agentes empezaron a orbitar el centro, dibujando trayectorias curvas y basta
 El movimiento se vuelve coherente globalmente (todos giran en el mismo sentido), menos errático que con noise.
 Si subo maxspeed, las órbitas se alargan y sienten más “energía”; si bajo maxforce, tardan más en alinearse con la curva.
 
+<img width="800" height="600" alt="flowfield_capture" src="https://github.com/user-attachments/assets/42467749-ad6e-45d1-9a52-9ed69eba6461" />
+
+## Codigo: 
+```javascript
+// Flow Field (vórtice) + Vehicles + Captura PNG/GIF (opcional)
+
+let flow;
+let vehicles = [];
+let capturer = null;   // CCapture instance (opcional)
+let recording = false; // estado de grabación GIF
+
+// Parámetros clave
+const RES = 24;        // resolución del campo (tamaño de celda)
+const NUM_VEH = 250;   // cantidad de agentes
+const MAX_SPEED = 3.0; // velocidad máxima
+const MAX_FORCE = 0.08;// fuerza máxima
+
+function setup() {
+  createCanvas(800, 600);
+  pixelDensity(1);
+
+  // Campo de flujo tipo vórtice
+  flow = new FlowField(RES);
+
+  // Crear vehículos
+  for (let i = 0; i < NUM_VEH; i++) {
+    vehicles.push(new Vehicle(random(width), random(height), MAX_SPEED, MAX_FORCE));
+  }
+
+  // UI: botones
+  const btnPNG = createButton("📸 Capturar PNG");
+  btnPNG.mousePressed(() => saveCanvas("flowfield_capture", "png"));
+
+  const btnStartGIF = createButton("🎬 Iniciar GIF (opcional)");
+  btnStartGIF.mousePressed(startGifCapture);
+
+  const btnStopGIF = createButton("⏹️ Detener y guardar GIF");
+  btnStopGIF.mousePressed(stopGifCapture);
+
+  background(250);
+}
+
+function draw() {
+  // Redibuja fondo muy suave para efecto “persistencia” (opcional)
+  noStroke();
+  fill(250, 250, 250, 10);
+  rect(0, 0, width, height);
+
+  // Mostrar el campo muy tenue (si quieres visualizar la grilla, descomenta)
+  // flow.show();
+
+  // Actualizar y dibujar agentes
+  for (let v of vehicles) {
+    v.follow(flow);
+    v.update();
+    v.edges();
+    v.show();
+  }
+
+  // Si estamos grabando GIF (requiere CCapture.js)
+  if (recording && capturer) {
+    // Captura el frame actual del canvas
+    capturer.capture(canvas);
+  }
+}
+
+/* ===============================
+   FlowField (vórtice / remolino)
+   =============================== */
+class FlowField {
+  constructor(resolution) {
+    this.res = resolution;
+    this.cols = floor(width / this.res);
+    this.rows = floor(height / this.res);
+    this.field = new Array(this.cols * this.rows);
+    this.generateVortex();
+  }
+
+  index(x, y) {
+    return x + y * this.cols;
+  }
+
+  generateVortex() {
+    const cx = width * 0.5;
+    const cy = height * 0.5;
+
+    for (let y = 0; y < this.rows; y++) {
+      for (let x = 0; x < this.cols; x++) {
+        const index = this.index(x, y);
+
+        // centro de la celda
+        const px = x * this.res + this.res * 0.5;
+        const py = y * this.res + this.res * 0.5;
+
+        // vector radial
+        const rx = px - cx;
+        const ry = py - cy;
+
+        // vector tangencial (perpendicular a radial)
+        let tx = -ry;
+        let ty =  rx;
+
+        // normalizar para evitar magnitud 0
+        const m = Math.hypot(tx, ty) || 1;
+        tx /= m;
+        ty /= m;
+
+        const v = createVector(tx, ty);
+        v.setMag(1); // magnitud unitaria
+        this.field[index] = v;
+      }
+    }
+  }
+
+  lookup(pos) {
+    const col = constrain(floor(pos.x / this.res), 0, this.cols - 1);
+    const row = constrain(floor(pos.y / this.res), 0, this.rows - 1);
+    const index = this.index(col, row);
+    return this.field[index].copy();
+  }
+
+  show() {
+    stroke(0, 40);
+    strokeWeight(1);
+    for (let y = 0; y < this.rows; y++) {
+      for (let x = 0; x < this.cols; x++) {
+        const index = this.index(x, y);
+        const v = this.field[index];
+        push();
+        translate(x * this.res + this.res * 0.5, y * this.res + this.res * 0.5);
+        rotate(v.heading());
+        line(0, 0, this.res * 0.5, 0);
+        pop();
+      }
+    }
+  }
+}
+
+/* ===============================
+   Vehicle (agente) con steering
+   =============================== */
+class Vehicle {
+  constructor(x, y, maxspeed, maxforce) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D();
+    this.acc = createVector(0, 0);
+
+    this.maxspeed = maxspeed;
+    this.maxforce = maxforce;
+
+    // apariencia
+    this.size = 3.5;
+    this.trailAlpha = 80;
+  }
+
+  applyForce(f) {
+    this.acc.add(f);
+  }
+
+  follow(flow) {
+    const desired = flow.lookup(this.pos); // vector del campo local
+    desired.setMag(this.maxspeed);
+
+    // steering = desired - velocity
+    const steer = p5.Vector.sub(desired, this.vel);
+    steer.limit(this.maxforce);
+    this.applyForce(steer);
+  }
+
+  update() {
+    this.vel.add(this.acc);
+    this.vel.limit(this.maxspeed);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+  }
+
+  edges() {
+    // wrap-around
+    if (this.pos.x < -this.size) this.pos.x = width + this.size;
+    if (this.pos.x > width + this.size) this.pos.x = -this.size;
+    if (this.pos.y < -this.size) this.pos.y = height + this.size;
+    if (this.pos.y > height + this.size) this.pos.y = -this.size;
+  }
+
+  show() {
+    // trazo sutil
+    stroke(0, this.trailAlpha);
+    strokeWeight(1);
+    point(this.pos.x, this.pos.y);
+
+    // cuerpo (triangulito orientado)
+    push();
+    translate(this.pos.x, this.pos.y);
+    rotate(this.vel.heading());
+    noStroke();
+    fill(0, 180);
+    triangle(this.size, 0, -this.size * 1.2, this.size * 0.8, -this.size * 1.2, -this.size * 0.8);
+    pop();
+  }
+}
+
+/* ===============================
+   Captura a GIF (opcional con CCapture)
+   =============================== */
+
+function startGifCapture() {
+  if (typeof CCapture === "undefined") {
+    alert("Para grabar GIF necesitas incluir CCapture.js en index.html.\nAun así puedes usar 📸 Capturar PNG.");
+    return;
+  }
+  if (!capturer) {
+    capturer = new CCapture({
+      format: "gif",
+      workersPath: "",   // si usas CDN, puede ir vacío
+      framerate: 30,
+      verbose: true,
+      quality: 20
+    });
+  }
+  if (!recording) {
+    recording = true;
+    capturer.start();
+    console.log("GIF recording started");
+  }
+}
+
+function stopGifCapture() {
+  if (capturer && recording) {
+    recording = false;
+    capturer.stop();
+    capturer.save(); // descarga el GIF
+    console.log("GIF saved");
+  }
+}
+```
+
 
 
 
