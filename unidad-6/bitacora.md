@@ -313,6 +313,37 @@ Efecto observado: el enjambre se organiza y “persigue” el punto. Se nota una
 <img width="900" height="600" alt="flocking_capture (1)" src="https://github.com/user-attachments/assets/c0924e4a-9ddd-4ff7-b45f-f9e6561894f6" />
 
 
+## Actividad 05.
+La idea central de este proyecto fue crear una pieza de arte generativo interactivo inspirada en la canción “Mbappé” de Eladio Carrión, utilizando algoritmos de flow fields para dirigir el movimiento de los agentes visuales. Lo que quería mostrar era que una canción no solo puede escucharse, sino también verse y tocarse, convirtiendo la experiencia musical en un espectáculo visual que reacciona en tiempo real.
+
+Quise que las visuales fueran dinámicas, llamativas y coherentes con la energía de la canción, con colores que cambian de acuerdo a los distintos momentos de la música y efectos visuales que acompañan los beats principales (bajos, cajas, hi-hats). Además, incorporé interactividad para que el usuario pueda “jugar” con la obra, disparando ondas, cometas o haces de luz al ritmo, como si estuviera tocando un instrumento visual junto a la pista.
+
+<img width="960" height="600" alt="mbappe_rose" src="https://github.com/user-attachments/assets/db6fb8a7-1c60-4ccf-b9a2-01c5e7d8349f" />
+
+<img width="960" height="600" alt="mbappe_rose (1)" src="https://github.com/user-attachments/assets/ee46b890-8bf7-46ba-8e9d-dcda97dc7796" />
+
+<img width="960" height="600" alt="mbappe_rose (2)" src="https://github.com/user-attachments/assets/3b3972d2-c69c-4698-b722-4d84b706c208" />
+
+<img width="960" height="600" alt="mbappe_rose (3)" src="https://github.com/user-attachments/assets/ea055edb-0995-44a4-8be3-1811b5a6abe7" />
+
+<img width="960" height="600" alt="mbappe_rose (4)" src="https://github.com/user-attachments/assets/bfab96a5-6fcf-44dc-aeb1-8131143b5ca4" />
+
+<img width="960" height="600" alt="mbappe_rose (5)" src="https://github.com/user-attachments/assets/afaa85b4-a9c1-4e0e-ac18-c4718f3eda39" />
+
+## enlace: 
+[Sketch en p5.js – NicolasQ455359 (ID: 8y58u1bk7)](https://editor.p5js.org/NicolasQ455359/sketches/8y58u1bk7)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
