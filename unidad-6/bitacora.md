@@ -334,6 +334,23 @@ Quise que las visuales fueran dinámicas, llamativas y coherentes con la energí
 [Sketch en p5.js – NicolasQ455359 (ID: 8y58u1bk7)](https://editor.p5js.org/NicolasQ455359/sketches/8y58u1bk7)
 
 
+## Autoevalución:
+Todas las actividades propuestas fueron realizadas y estan en la bitacora detalladamente con codigo e imagenes, la actividad 5 de arte generativo cumplió con lo propuesto utilizando flow fields y añadiendo interactividad como si se pudieran tocar las visuales.
+NOTA PROPUESTA: 5.0
+
+Defensa de la nota:
+
+Actividad 01: Seleccioné imágenes del artista Tyler Hobbs, expliqué qué me llamaba la atención de ellas y qué me inspiraba de su trabajo.
+
+Actividad 02: Investigué y respondí qué es una steering force, cómo se diferencia de otras fuerzas y la relación con el trabajo de Craig Reynolds.
+
+Actividad 03: Analicé el algoritmo de flow fields, identifiqué la estructura de datos usada, expliqué cómo los agentes calculan la fuerza de dirección, listé los parámetros clave y realicé modificaciones en el código con evidencia.
+
+Actividad 04: Estudié el comportamiento de flocking, describí con mis palabras las tres reglas (separación, alineación, cohesión), expliqué los parámetros clave, realicé modificaciones en el código y documenté los cambios con su efecto.
+
+Actividad 05: Desarrollé una pieza de arte generativo interactivo inspirada en la canción Mbappé de Eladio Carrión, usando flow fields, sincronizada con la música, con interactividad en tiempo real que permite “tocar” las visuales como un instrumento. Documenté la idea principal, el proceso y los resultados.
+
+
 
 
 
