@@ -274,6 +274,47 @@ function stopGifCapture() {
 }
 ```
 
+## Actividad 04
+### 1. Las tres reglas
+
+- Separación (Separation)
+Objetivo: no pegarnos. Mantener “espacio personal” para que el grupo no colapse.
+
+Cómo calcula la fuerza: reviso quiénes están muy cerca (d < radio). Por cada vecino saco un vector lejos de él (miPos − suPos) y lo peso más fuerte si está pegadísimo. Promedio esos vectores, lo llevo a mi maxspeed y hago steering = desired − vel, limitado por maxforce.
+
+- Alineación (Alignment)
+Objetivo: apuntar más o menos en la misma dirección que mis vecinos.
+
+Cómo calcula la fuerza: promedia la velocidad de los vecinos cercanos. Ese promedio lo uso como desired (con maxspeed). La fuerza es steering = desired − vel, limitada por maxforce.
+
+- Cohesión (Cohesion)
+Objetivo: no perder al grupo; moverme hacia el centro de mis vecinos.
+
+Cómo calcula la fuerza: promedia la posición de los vecinos (centroide), arma un seek hacia ese punto (lleva a maxspeed) y hace steering = desired − vel, limitado por maxforce.
+
+### 2. Parámetros clave que identifiqué
+perceptionRadius (y a veces ángulo): hasta dónde “veo” para contar a alguien como vecino.
+
+Pesos de reglas: wSep, wAli, wCoh (qué tanto influye cada comportamiento en la mezcla).
+
+maxspeed y maxforce: topo de velocidad y giro (suaviza o vuelve brusco el movimiento).
+
+### 3. Mi modificación y lo que pasó
+Hice dos pruebas, pero reporto como principal la del target global (todos además siguen un objetivo con un seek):
+
+Modificación: añadí un target controlado por mí y sumé su fuerza de seek a la mezcla (con peso propio).
+
+Ajustes que usé: wSep = 1.2, wAli = 1.0, wCoh = 0.9, perception = 70, maxspeed = 3.0, maxforce = 0.08, wTarget = 0.7.
+
+Efecto observado: el enjambre se organiza y “persigue” el punto. Se nota una cabeza que va hacia el objetivo y una cola que se estira; cuando muevo el target, el grupo dobla con fluidez sin perder la forma (Separación evita choques, Cohesión mantiene la masa y Alineación hace que apunten parecido).
+
+<img width="900" height="600" alt="flocking_capture" src="https://github.com/user-attachments/assets/da94d2dc-550f-4655-b4e5-93bf91d522eb" />
+
+<img width="900" height="600" alt="flocking_capture (1)" src="https://github.com/user-attachments/assets/c0924e4a-9ddd-4ff7-b45f-f9e6561894f6" />
+
+
+
+
 
 
 
