@@ -54,8 +54,6 @@ Si subo maxspeed, las órbitas se alargan y sienten más “energía”; si bajo
 
 ## Codigo: 
 ```javascript
-// Flow Field (vórtice) + Vehicles + Captura PNG/GIF (opcional)
-
 let flow;
 let vehicles = [];
 let capturer = null;   // CCapture instance (opcional)
@@ -116,9 +114,6 @@ function draw() {
   }
 }
 
-/* ===============================
-   FlowField (vórtice / remolino)
-   =============================== */
 class FlowField {
   constructor(resolution) {
     this.res = resolution;
@@ -188,9 +183,6 @@ class FlowField {
   }
 }
 
-/* ===============================
-   Vehicle (agente) con steering
-   =============================== */
 class Vehicle {
   constructor(x, y, maxspeed, maxforce) {
     this.pos = createVector(x, y);
@@ -251,10 +243,6 @@ class Vehicle {
   }
 }
 
-/* ===============================
-   Captura a GIF (opcional con CCapture)
-   =============================== */
-
 function startGifCapture() {
   if (typeof CCapture === "undefined") {
     alert("Para grabar GIF necesitas incluir CCapture.js en index.html.\nAun así puedes usar 📸 Capturar PNG.");
@@ -285,6 +273,7 @@ function stopGifCapture() {
   }
 }
 ```
+
 
 
 
