@@ -674,6 +674,38 @@ function resetWord() {
 <img width="960" height="560" alt="Captura de pantalla 2025-10-16 103322" src="https://github.com/user-attachments/assets/07953b1d-b6d8-4660-85c3-f717b019e479" />
 
 
+### Nota propuesta: 5.0
+Actividad 01
+En esta primera parte analicé el trabajo de Ji Lee y comprendí cómo la forma visual de una palabra puede comunicar su significado sin necesidad de imágenes externas.
+Describí varios ejemplos con un análisis personal, y luego propuse ideas propias con sentido semántico y coherencia entre forma y significado.
+Cumplí con todos los puntos solicitados (observación, análisis y creación de bocetos), y lo hice de manera reflexiva, no solo descriptiva.
+
+Actividad 02
+En esta etapa aprendí a usar Matter.js desde cero. Replicé y documenté correctamente dos experimentos básicos:
+
+Cuerpos cayendo y colisionando.
+
+Un sistema con restricciones y control de mouse.
+
+Expliqué claramente qué es Engine, World, Bodies, Constraint y MouseConstraint, con mis propias palabras, y presenté el código, capturas y reflexión sobre las dificultades (principalmente los errores de variables duplicadas).
+Además, solucioné los problemas del código y logré integrar p5.js con Matter.js de forma limpia.
+
+Actividad 03
+La palabra elegida CONECTAR tiene un concepto claro y coherente con la interacción: las letras unidas por enlaces representan conexiones, y los gestos de la mano (pinza y mano abierta) permiten literalmente conectar o romper.
+Incorporé visión artificial con ml5.js (Handpose) y eliminé controles innecesarios, haciendo que el proyecto fuera totalmente gestual.
+Además, mantuve una estética limpia, tres temas visuales, movimiento fluido y un sistema de partículas cuando los enlaces se rompen.
+
+Integré tres tecnologías (p5.js, Matter.js y ml5.js).
+
+Logré una relación directa entre concepto y comportamiento.
+
+Cumplí con la parte técnica, estética y reflexiva.
+
+Simplifiqué la interacción para que fuera más intuitiva y significativa.
+
+
+
+
 
 
 
