@@ -232,6 +232,449 @@ Nota: En el index.html agregué dos botones para alternar:
  [Ver experimento en p5.js](https://editor.p5js.org/NicolasQ455359/sketches/UWPta2M3W)
 
 
+## Actividad 03
+
+### Idea conceptual
+
+Elegí la palabra CONECTAR porque representa unión, relación y movimiento entre partes, y me pareció interesante poder mostrar eso con física y gestos.
+La animación busca que las letras no sean algo quieto, sino que parezcan “vivas”, unidas por lazos elásticos que pueden estirarse o romperse.
+
+Cuando hago el gesto de pinza con mi mano, las letras se atraen hacia mí, como si se fortaleciera el vínculo entre ellas. Pero cuando abro la mano, los enlaces se vuelven rompibles, mostrando que la conexión también puede soltarse o perderse.
+Además, al mover la palma, genero un viento digital que empuja las letras, dándole una sensación de energía o comunicación entre todas.
+
+La idea es que el gesto humano (conectar o desconectar) controle directamente la palabra, haciendo que su comportamiento físico refleje su significado.
+
+### Aspectos técnicos
+
+Para hacer esto, usé p5.js junto con Matter.js y ml5.js.
+Cada letra de “CONECTAR” es un cuerpo físico en forma de rectángulo, y encima se dibuja la letra.
+Entre cada par de letras hay dos restricciones elásticas (arriba y abajo), lo que hace que la palabra se sienta unida pero flexible, como una cuerda o una red.
+
+La parte de visión artificial se hizo con ml5 Handpose, que detecta la posición de mi mano en tiempo real.
+El programa mide la distancia entre el pulgar y el índice:
+
+- Si están juntos (pinza), las letras son atraídas.
+
+- Si la mano está abierta, los enlaces pasan al modo “rompible”.
+
+- Si muevo la mano, las letras sienten una fuerza de viento.
+
+Las propiedades físicas que más influyen son la rigidez (stiffness), la amortiguación (damping) y el coeficiente de fricción, que ayudan a que el movimiento se vea natural.
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Actividad 03 — CONECTAR</title>
+
+    <!-- Librerías -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #0b0b10;
+        font-family: Inter, system-ui, Arial, sans-serif;
+      }
+      .panel {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="panel">
+      <strong>CONÉCTAR — Control con la mano</strong><br />
+      Pinza = atraer letras · Mano abierta = activar o desactivar enlaces rompibles · Mover la mano = viento.<br />
+      <b>Teclas:</b> G = gravedad | R = reset | 1/2/3 = tema visual
+    </div>
+    <script src="sketch.js"></script>
+  </body>
+</html>
+```
+```javascript
+// ===== Matter refs =====
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Composite = Matter.Composite;
+const Constraint = Matter.Constraint;
+const Mouse = Matter.Mouse;
+const MouseConstraint = Matter.MouseConstraint;
+
+let engine, world, mConstraint;
+let letterBodies = [];
+let links = [];
+let walls = [];
+let gravityOn = true;
+let breakable = true;    // ahora se controla con MANO ABIERTA (gesto), no con tecla B
+let particles = [];
+let theme = 2;           // look oscuro/cian por defecto
+
+// Palabra y parámetros
+const WORD = "CONECTAR";
+const LETTER_W = 58;
+const LETTER_H = 78;
+const LETTER_SPACING = 18;
+const BASE_Y = 170;
+const DAMPING_LINK = 0.08;
+const BREAK_RATIO = 1.65;
+
+// --------- Visión (ml5 Handpose) ---------
+let video, handpose, predictions = [];
+let handReady = false;
+
+// Señales/estado de gestos
+let palmX = null, palmY = null, prevPalmX = null, prevPalmY = null;
+let pinchDist = null;
+const PINCH_THRESHOLD = 35; // px — por debajo = pinza
+let wasOpen = false;        // para hacer "toggle por flanco" cuando la mano se abre
+
+function setup() {
+  createCanvas(980, 560);
+
+  // Cámara
+  video = createCapture({ video: true, audio: false });
+  video.size(640, 480);
+  video.hide();
+
+  // Handpose
+  handpose = ml5.handpose(video, () => { handReady = true; });
+  handpose.on("predict", (results) => { predictions = results; });
+
+  // Matter
+  engine = Engine.create();
+  world = engine.world;
+  world.gravity.y = 1;
+
+  // Bordes
+  const thick = 50;
+  const ground = Bodies.rectangle(width / 2, height + thick/2 - 2, width, thick, { isStatic: true });
+  const roof   = Bodies.rectangle(width / 2, -thick/2 + 2, width, thick, { isStatic: true });
+  const wallL  = Bodies.rectangle(-thick/2 + 2, height / 2, thick, height, { isStatic: true });
+  const wallR  = Bodies.rectangle(width + thick/2 - 2, height / 2, thick, height, { isStatic: true });
+  walls = [ground, roof, wallL, wallR];
+  Composite.add(world, walls);
+
+  // Palabra
+  createWordBodies();
+  connectLettersLadder();
+
+  // Mouse (opcional, por si quieres arrastrar)
+  const mouse = Mouse.create(canvas.elt);
+  mConstraint = MouseConstraint.create(engine, { mouse, constraint: { stiffness: 0.22 } });
+  Composite.add(world, mConstraint);
+
+  textAlign(CENTER, CENTER);
+  rectMode(CENTER);
+}
+
+function createWordBodies() {
+  letterBodies = [];
+  const totalWidth = WORD.length * LETTER_W + (WORD.length - 1) * LETTER_SPACING;
+  const startX = (width - totalWidth) / 2 + LETTER_W / 2;
+
+  for (let i = 0; i < WORD.length; i++) {
+    const x = startX + i * (LETTER_W + LETTER_SPACING);
+    const y = BASE_Y;
+
+    const body = Bodies.rectangle(x, y, LETTER_W, LETTER_H, {
+      restitution: 0.06,
+      friction: 0.22,
+      frictionAir: 0.015,
+      density: 0.0028
+    });
+    body._init = { x, y, angle: 0 };
+    body.label = `LETTER_${WORD[i]}`;
+    letterBodies.push(body);
+    Composite.add(world, body);
+  }
+}
+
+// Doble constraint por par (arriba/abajo) para movimiento orgánico
+function connectLettersLadder() {
+  links = [];
+  for (let i = 0; i < letterBodies.length - 1; i++) {
+    const A = letterBodies[i];
+    const B = letterBodies[i + 1];
+    // top
+    const linkTop = Constraint.create({
+      bodyA: A, bodyB: B,
+      pointA: { x: LETTER_W/2 - 6, y: -LETTER_H/2 + 10 },
+      pointB: { x: -LETTER_W/2 + 6, y: -LETTER_H/2 + 10 },
+      length: LETTER_SPACING + 8, stiffness: 0.12, damping: DAMPING_LINK
+    });
+    linkTop._restLen = linkTop.length;
+    // bottom
+    const linkBot = Constraint.create({
+      bodyA: A, bodyB: B,
+      pointA: { x: LETTER_W/2 - 6, y:  LETTER_H/2 - 10 },
+      pointB: { x: -LETTER_W/2 + 6, y:  LETTER_H/2 - 10 },
+      length: LETTER_SPACING + 8, stiffness: 0.12, damping: DAMPING_LINK
+    });
+    linkBot._restLen = linkBot.length;
+
+    links.push(linkTop, linkBot);
+    Composite.add(world, [linkTop, linkBot]);
+  }
+}
+
+function draw() {
+  drawBackgroundTheme();
+  Engine.update(engine, 1000 / 60);
+
+  // Procesar mano y aplicar controles físicos
+  updateHandControls();
+
+  // Dibujar links con color por tensión + rotura si procede
+  for (let i = links.length - 1; i >= 0; i--) {
+    const L = links[i];
+    if (!L.bodyA || !L.bodyB) continue;
+    const { ax, ay, bx, by, lenNow } = endpointsAndLength(L);
+    const color = tensionColor(lenNow / (L._restLen || L.length));
+    stroke(color);
+    strokeWeight(2);
+    line(ax, ay, bx, by);
+
+    if (breakable && lenNow > (L._restLen || L.length) * BREAK_RATIO) {
+      spawnBreakSparks((ax + bx) / 2, (ay + by) / 2);
+      Composite.remove(world, L);
+      links.splice(i, 1);
+    }
+  }
+
+  // Dibujar letras
+  for (let i = 0; i < letterBodies.length; i++) drawLetterBlock(letterBodies[i], WORD[i]);
+
+  // Partículas
+  updateAndDrawParticles();
+
+  // Indicadores de mano
+  drawHandOverlay();
+
+  drawHUD();
+}
+
+/* ---------- Handpose: control simplificado ---------- */
+function updateHandControls() {
+  if (!handReady || predictions.length === 0) {
+    pinchDist = null;
+    wasOpen = false;
+    return;
+  }
+  const hand = predictions[0];
+  const thumb = hand.annotations.thumb[3];      // pulgar tip
+  const indexF = hand.annotations.indexFinger[3];// índice tip
+  const wrist = hand.landmarks[0];
+
+  // Map de coords (video 640x480 -> canvas) y espejo
+  const vx = (1 - (wrist[0] / video.width)) * width;
+  const vy = (wrist[1] / video.height) * height;
+
+  // Suavizado de palma
+  if (palmX == null) { palmX = vx; palmY = vy; }
+  palmX = lerp(palmX, vx, 0.4);
+  palmY = lerp(palmY, vy, 0.4);
+
+  // Distancia de pinza
+  const tx = (1 - (thumb[0] / video.width)) * width;
+  const ty = (thumb[1] / video.height) * height;
+  const ix = (1 - (indexF[0] / video.width)) * width;
+  const iy = (indexF[1] / video.height) * height;
+  pinchDist = dist(tx, ty, ix, iy);
+
+  // Viento por velocidad de palma (sustituye tecla W)
+  if (prevPalmX != null && prevPalmY != null) {
+    const vxPalm = palmX - prevPalmX;
+    const vyPalm = palmY - prevPalmY;
+    const scale = 0.0008;
+    for (const b of letterBodies) {
+      Matter.Body.applyForce(b, b.position, { x: vxPalm * scale, y: vyPalm * scale });
+    }
+  }
+  prevPalmX = palmX;
+  prevPalmY = palmY;
+
+  // GESTOS:
+  // Pinza => atraer fuerte a la palma
+  const isPinching = pinchDist < PINCH_THRESHOLD;
+  if (isPinching) {
+    attractLettersTo(palmX, palmY, 0.035);
+    wasOpen = false; // al cerrar, preparamos el flanco de apertura
+  } else {
+    // Mano abierta => "función B": toggle de breakable UNA sola vez cuando se abre
+    if (!wasOpen) {
+      breakable = !breakable; // T O G G L E
+      wasOpen = true;
+    }
+    // Con la mano abierta también aplicamos leve repulsión para dar control
+    repelLettersFrom(palmX, palmY, 0.008);
+  }
+}
+
+function attractLettersTo(x, y, k = 0.03) {
+  for (const b of letterBodies) {
+    const dir = createVector(x - b.position.x, y - b.position.y);
+    const d = max(40, dir.mag());
+    dir.normalize().mult(k * (1 / (d / 120)));
+    Matter.Body.applyForce(b, b.position, { x: dir.x, y: dir.y });
+  }
+}
+
+function repelLettersFrom(x, y, k = 0.01) {
+  for (const b of letterBodies) {
+    const dir = createVector(b.position.x - x, b.position.y - y);
+    const d = max(50, dir.mag());
+    dir.normalize().mult(k * (1 / (d / 120)));
+    Matter.Body.applyForce(b, b.position, { x: dir.x, y: dir.y });
+  }
+}
+
+/* ---------- Dibujo & estética ---------- */
+function drawBackgroundTheme() {
+  if (theme === 1) {
+    for (let y = 0; y < height; y++) {
+      const t = y / height;
+      stroke( lerpColor(color("#f2f4ff"), color("#e6faff"), t) );
+      line(0, y, width, y);
+    }
+  } else if (theme === 2) {
+    background("#0b0b10");
+    noFill(); stroke(255, 255, 255, 10);
+    for (let x = 0; x < width; x += 28) line(x, 0, x, height);
+    for (let y = 0; y < height; y += 28) line(0, y, width, y);
+  } else {
+    for (let y = 0; y < height; y++) {
+      const t = y / height;
+      stroke( lerpColor(color("#f8e7ff"), color("#ffe9f2"), t) );
+      line(0, y, width, y);
+    }
+  }
+}
+
+function drawLetterBlock(b, ch) {
+  // sombra
+  push();
+  translate(b.position.x + 6, b.position.y + 8);
+  rotate(b.angle);
+  noStroke(); fill(0, 30);
+  rect(0, 0, LETTER_W, LETTER_H, 14);
+  pop();
+
+  // bloque
+  push();
+  translate(b.position.x, b.position.y);
+  rotate(b.angle);
+  noStroke();
+  const fillCol = (theme === 2) ? color("#9AE6FF") : (theme === 3 ? color("#b86cff") : color("#1f5eff"));
+  fill( lerpColor(fillCol, color(255), 0.15) );
+  rect(0, 0, LETTER_W, LETTER_H, 14);
+  // borde
+  noFill(); stroke(0, 60); strokeWeight(1.2);
+  rect(0, 0, LETTER_W, LETTER_H, 14);
+  // letra
+  noStroke(); fill(theme === 2 ? 15 : 30);
+  textSize(38); text(ch, 0, 3);
+  pop();
+}
+
+function drawHandOverlay() {
+  if (!handReady) return;
+  // anillo en la palma: verde si pinza (atracción), naranja si abierta (toggle B)
+  if (palmX != null && palmY != null) {
+    stroke(pinchDist != null && pinchDist < PINCH_THRESHOLD ? "#33cc66" : "#ffaa00");
+    strokeWeight(2);
+    noFill();
+    circle(palmX, palmY, 22);
+  }
+}
+
+function drawHUD() {
+  const modeTxt = !handReady ? "cargando..." :
+                  (predictions.length ? (pinchDist < PINCH_THRESHOLD ? "PINZA: atraer" : "MANO ABIERTA: toggle romper") : "sin mano");
+  const txt = `Handpose: ${modeTxt} · romper: ${breakable ? "ON" : "OFF"} · G: gravedad · R: reset · 1/2/3: temas`;
+  const w = textWidth(txt) + 18;
+  noStroke(); fill(255, 230); rect(width/2, height - 22, w, 26, 8);
+  fill(30); textSize(12); text(txt, width/2, height - 22);
+}
+
+/* ---------- Utilidades físicas/partículas ---------- */
+function endpointsAndLength(L) {
+  const a = L.bodyA, b = L.bodyB;
+  const ax = a.position.x + Math.cos(a.angle) * L.pointA.x - Math.sin(a.angle) * L.pointA.y;
+  const ay = a.position.y + Math.sin(a.angle) * L.pointA.x + Math.cos(a.angle) * L.pointA.y;
+  const bx = b.position.x + Math.cos(b.angle) * L.pointB.x - Math.sin(b.angle) * L.pointB.y;
+  const by = b.position.y + Math.sin(b.angle) * L.pointB.x + Math.cos(b.angle) * L.pointB.y;
+  const lenNow = dist(ax, ay, bx, by);
+  return { ax, ay, bx, by, lenNow };
+}
+
+function tensionColor(ratio) {
+  const t = constrain(map(ratio, 1.0, 1.6, 0, 1), 0, 1);
+  return lerpColor(color("#33cc66"), color("#ff4d4f"), t);
+}
+
+function spawnBreakSparks(x, y) {
+  for (let i = 0; i < 16; i++) {
+    particles.push({ x, y, vx: random(-2, 2), vy: random(-2, -0.2), life: random(16, 30), col: color("#ff9a3c") });
+  }
+}
+
+function updateAndDrawParticles() {
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy; p.vy += 0.08; p.life--;
+    noStroke(); fill(red(p.col), green(p.col), blue(p.col), map(p.life, 0, 30, 0, 255));
+    circle(p.x, p.y, map(p.life, 0, 30, 0, 5) + 2);
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+}
+
+/* ---------- Teclas mínimas (simplificadas) ---------- */
+function keyPressed() {
+  if (key === 'G' || key === 'g') { gravityOn = !gravityOn; world.gravity.y = gravityOn ? 1 : 0; }
+  if (key === 'R' || key === 'r') resetWord();
+  if (key === '1') theme = 1;
+  if (key === '2') theme = 2;
+  if (key === '3') theme = 3;
+}
+
+function resetWord() {
+  // reset constraints
+  for (const L of links) Composite.remove(world, L);
+  links = [];
+  // reset letters
+  for (const b of letterBodies) {
+    const s = b._init;
+    Matter.Body.setPosition(b, { x: s.x, y: s.y });
+    Matter.Body.setAngle(b, s.angle);
+    Matter.Body.setVelocity(b, { x: 0, y: 0 });
+    Matter.Body.setAngularVelocity(b, 0);
+  }
+  connectLettersLadder();
+  particles = [];
+}
+```
+
+<img width="976" height="567" alt="Captura de pantalla 2025-10-16 103307" src="https://github.com/user-attachments/assets/70c05e59-4451-438a-9ffe-8d5bc7c12efa" />
+
+
+<img width="960" height="560" alt="Captura de pantalla 2025-10-16 103322" src="https://github.com/user-attachments/assets/07953b1d-b6d8-4660-85c3-f717b019e479" />
+
+
+
 
 
 
