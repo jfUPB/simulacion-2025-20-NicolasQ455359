@@ -228,6 +228,11 @@ Nota: En el index.html agregué dos botones para alternar:
 
  Solución: crear paredes/techo/suelo estáticos (isStatic: true) como en el Experimento 1.
 
+ ### Link
+ [Ver experimento en p5.js](https://editor.p5js.org/NicolasQ455359/sketches/UWPta2M3W)
+
+
+
 
 
 
