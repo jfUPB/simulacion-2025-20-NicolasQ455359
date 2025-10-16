@@ -184,6 +184,45 @@ Nota: En el index.html agregué dos botones para alternar:
 <button onclick="setExperiment(2)">Experimento 2</button>
 ```
 
+### Conceptos clave 
+
+- Engine (motor): Sistema que avanza la simulación (posiciones, velocidades, colisiones) en cada paso de tiempo. En p5, se actualiza con Engine.update(engine, 1000/60) dentro de draw().
+
+- World (mundo): Contenedor de todo lo físico (cuerpos, constraints, gravedad). Se accede con engine.world. Es el “escenario” de la simulación.
+
+- Bodies (cuerpos): Objetos con masa/forma que pueden moverse o ser estáticos. Comunes: Bodies.rectangle, Bodies.circle, Bodies.polygon. Se configuran con propiedades como isStatic, restitution (rebote), friction, density.
+
+- Constraint (restricción): Conecta dos cuerpos o un cuerpo con un punto fijo, como cuerda, barra o resorte. Parámetros clave: length, stiffness (rigidez), damping (amortiguación).
+
+- MouseConstraint: Permite agarrar/arrastrar cuerpos con el mouse creando una restricción temporal entre el cursor y el cuerpo cercano. Útil para pruebas interactivas.
+
+### Dificultades encontradas 
+
+- “Identifier ‘Engine’ has already been declared”
+
+ Causa: declarar let/const Engine = Matter.Engine más de una vez (por tener dos experimentos en el mismo archivo).
+
+ Solución: declarar las referencias a Matter.js una sola vez al inicio del sketch.js (como en el código de arriba).
+
+- Nada se dibuja / Matter no cargado
+
+ Causa: orden de scripts incorrecto.
+
+ Solución: En el index.html, cargar primero p5.js, luego matter.min.js, y al final tu sketch.js.
+
+- El mouse no arrastra cuerpos
+
+ Causa: el mouse no se creó con el lienzo correcto o no se añadió el constraint al mundo.
+
+ Solución: const mouse = Mouse.create(canvas.elt); y luego Composite.add(world, mConstraint);.
+
+- Los cuerpos atraviesan bordes
+
+ Causa: no hay límites físicos.
+
+ Solución: crear paredes/techo/suelo estáticos (isStatic: true) como en el Experimento 1.
+
+
 
 
 
