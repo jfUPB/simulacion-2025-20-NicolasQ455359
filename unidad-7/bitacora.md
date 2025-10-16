@@ -52,6 +52,9 @@ Mensaje visual: Sensación de desplazamiento rápido, energía y acción
 ## Actividad 02
 ### Experimento 1 — Mundo con gravedad, cuerpos dinámicos y MouseConstraint
 
+<img width="851" height="505" alt="image" src="https://github.com/user-attachments/assets/d1701ed8-fcc4-4783-a440-b1debe747c26" />
+
+
 Descripción breve: Se crea un motor físico con gravedad, un suelo/paredes estáticos y cuerpos aleatorios (círculos y cajas) que caen y colisionan. Se añade MouseConstraint para agarrar/arrastrar cuerpos con el mouse.
 ### Codigo
 ```javascript
@@ -150,6 +153,9 @@ function draw() {
 ```
 Experimento 2 — Péndulo con Constraint (punto fijo → cuerpo)
 
+<img width="858" height="506" alt="image" src="https://github.com/user-attachments/assets/403a0627-f84b-4278-86a4-2e17a37d4fef" />
+
+
 Descripción breve: Se crea un péndulo uniendo un punto fijo del mundo (pointA) con un cuerpo circular (bodyB) mediante Constraint. Se puede empujar con el mouse usando MouseConstraint.
 
 ### codigo
@@ -221,6 +227,7 @@ Nota: En el index.html agregué dos botones para alternar:
  Causa: no hay límites físicos.
 
  Solución: crear paredes/techo/suelo estáticos (isStatic: true) como en el Experimento 1.
+
 
 
 
